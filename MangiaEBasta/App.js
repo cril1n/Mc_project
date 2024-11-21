@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
+import ViewModel from './viewModel/ViewModel';
+import Root from './components/Root';
 
 export default function App() {
+
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+
+    async function initApp() {
+      try {
+        await ViewModel.initApp();
+       //await ViewModel.ResetApp();
+        setInitialized(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    initApp();
+  }, []);
+
+  if (!initialized) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Loading app...</Text>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <Root />
+  )
+
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
