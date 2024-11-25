@@ -83,4 +83,14 @@ export default class CommunicationController {
         const bodyParams = {};
         return await this.genericRequest(endPoint, verb, queryParams, bodyParams)
     }
+
+    static async getNearMenus(userLat, userLng, userSid) {
+        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/menu/';
+
+        const endPoint = '';
+        const verb = 'GET';
+        const queryParams = {lat: userLat, lng: userLng, sid: userSid};
+        const bodyParams = {};
+        return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
+    }
 }

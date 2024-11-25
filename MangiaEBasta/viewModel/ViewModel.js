@@ -6,6 +6,8 @@ import PositionManager from '../manager/PositionManager';
 
 export default class ViewModel {
 
+    static sid = null;
+
     static psManager = null;
     static stManager = null;
 
@@ -17,7 +19,6 @@ export default class ViewModel {
             await this.initDB();
             await this.checkFirstRun();
             await this.initPosition();
-            await this.psManager.getCurrentPosition();
         } catch (error) {
             console.log(error);
         }
@@ -49,6 +50,7 @@ export default class ViewModel {
         }
         // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nel database
         if (sid && uid) {
+            this.sid = sid;
             let dbUid = null;
             try {
                 user = JSON.parse(await this.stManager.getFirstUser());
@@ -65,11 +67,11 @@ export default class ViewModel {
                     this.stManager.openDB();
                     let user = await CommunicationController.fetchUser(uid, sid);
                     await this.stManager.saveUser(JSON.stringify(user));
+                    console.log("Utente salvato nel database");
                 } catch (error) {
                     console.log(error);
                 }
             }
-            console.log("Nuovo utente salvato nel database");
         } else {
             // Se è il primo avvio, chiedo al server un nuovo utente e salvo i dati nel database
             console.log("first run");
@@ -84,7 +86,8 @@ export default class ViewModel {
             newSid = response.sid;
             newUid = response.uid;
             // Salvo i nuovi sid e id nel AsyncStorage
-            await AsyncStorage.setItem("sid", JSON.stringify(newSid));
+            await AsyncStorage.setItem("sid", newSid);
+            this.sid = newSid;
             await AsyncStorage.setItem("uid", JSON.stringify(newUid));
             console.log("Nuovi sid e uid salvati in AsyncStorage");
             // Recupero i dati del nuovo utente e lo salvo nel database
@@ -105,6 +108,15 @@ export default class ViewModel {
         console.log('Initializing position manager')
         this.psManager = new PositionManager()
         await this.psManager.checkLocationPermission()
+    }
+
+    // Ricevo la posizione attuale
+    static async getCurrentPosition() {
+        try {
+            return await this.psManager.getCurrentPosition();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     static async ResetApp() {
@@ -141,15 +153,15 @@ export default class ViewModel {
 
 
     //MENU AND IMAGES
-    static async getMenuWithImage() {
+    static async getMenuWithImage(mid) {
         try {
-            let menu = await CommunicationController.getMenu(48.4786, 9.2271, '0eGyHglvdhLsnMKgtKOWjyna5OO5cbGXUUjpmWfKNIkspvtdsG20DKDEYeh1yrCt', 1);
+            let menu = await CommunicationController.getMenu(48.4786, 9.2271, this.sid , mid);
             let imageVersion = menu.imageVersion;
             let DBImageVersion = await this.stManager.getMenuImageVersionDB(menu.mid);
 
             if (imageVersion != DBImageVersion) {
                 console.log("Image not up to date");
-                let image = await CommunicationController.getMenuImage(1, '0eGyHglvdhLsnMKgtKOWjyna5OO5cbGXUUjpmWfKNIkspvtdsG20DKDEYeh1yrCt');
+                let image = await CommunicationController.getMenuImage(mid, this.sid);
                 await this.stManager.saveMenuImage(image.base64, imageVersion, menu.mid);
                 menu.imageCode = image.base64;
             } else {
@@ -161,6 +173,22 @@ export default class ViewModel {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    static async getNearMenus(lat, lng) {
+        try {
+            let menuList = await CommunicationController.getNearMenus(lat, lng, this.sid);
+            menuList = menuList.filter(menu => menu.name !== 'string');
+    
+            for (let i = 0; i < menuList.length; i++) {
+                menuList[i] = await this.getMenuWithImage(menuList[i].mid);
+            }
+            
+            //console.log(menuList);
+            return menuList;
+        } catch (error) {
+            console.log(error);
+        }  
     }
 
 }

@@ -8,7 +8,7 @@ export default class PositionManager {
         this.canUseLocation = false;
     }
 
-    static resetPosition() {
+    resetPosition() {
         this.lastLocation = null;
         this.canUseLocation = false;
     }

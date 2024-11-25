@@ -6,13 +6,16 @@ import Root from './components/Root';
 export default function App() {
 
   const [initialized, setInitialized] = useState(false);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
 
     async function initApp() {
       try {
         await ViewModel.initApp();
-       //await ViewModel.ResetApp();
+        loc = await ViewModel.getCurrentPosition();
+        setLocation(loc);
+        //await ViewModel.ResetApp()
         setInitialized(true);
       } catch (error) {
         console.log(error);
@@ -31,7 +34,7 @@ export default function App() {
   }
 
   return (
-    <Root />
+    <Root location={location} />
   )
 
 
