@@ -55,7 +55,6 @@ export default function Home() {
     <Stack.Navigator >
       <Stack.Screen options={{ headerShown: false }} name="Restaurants " component={MenuTabScreen} />
       <Stack.Screen name="Menu Details" component={MenuDetails} />
-      <Stack.Screen name="Profile Info" component={ProfileInfo} />
     </Stack.Navigator>
   );
 }
