@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import ViewModel from './viewModel/ViewModel';
 import Root from './components/Root';
-import { set } from 'react-hook-form';
 
 export default function App() {
 

@@ -9,7 +9,6 @@ import { styles } from '../../styles';
 import MenuList from './MenuList';
 import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
-import ProfileInfo from '../ProfileInfo';
 import { useLocation } from '../../model/LocationContext';
 
 const Stack = createStackNavigator();
@@ -56,7 +55,6 @@ export default function Home() {
         {props => <MenuTabScreen {...props} location={location} menuList={menuList} />}
       </Stack.Screen>
       <Stack.Screen name="Menu Details" component={MenuDetails} />
-      <Stack.Screen name="Profile Info" component={ProfileInfo} />
     </Stack.Navigator>
   );
 }

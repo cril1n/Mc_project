@@ -1,7 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import ProfileInfo from './ProfileInfo';
-import LOrderInfo from './LOrderInfo';
 
 const Tab = createMaterialTopTabNavigator();
 
