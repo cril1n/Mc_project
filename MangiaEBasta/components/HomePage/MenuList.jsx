@@ -5,8 +5,6 @@ export default function MenuList({ navigation }) {
     return (
         <View>
             <Text>MenuList</Text>
-            <Button title="Go to Menu Details" onPress={() => navigation.navigate('Menu Details')} />
-            <Button title="Go to Profile Info" onPress={() => navigation.navigate('Profile Info')} />
         </View>
     );
 }

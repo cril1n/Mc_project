@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ViewModel from '../viewModel/ViewModel';
 import Home from './HomePage/Home';
 import OrderTrack from './OrderTrack';
-import Profile from './Profile';
+import Profile from './Profile/Profile';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LocationProvider } from '../model/LocationContext'; // Importa il contesto
 
@@ -49,19 +49,29 @@ export default function Root() {
                                 tabBarIcon: () => (
                                     <Image source={require('../assets/icons/restaurant.png')} style={styles.icon} />
                                 ),
-                                headerShown: false
+                                headerShown: false,
+                                title: 'Restaurants',
                             }} />
                         <Tab.Screen name='OrderTrack' component={OrderTrack}
                             options={{
                                 tabBarIcon: () => (
                                     <Image source={require('../assets/icons/order.png')} style={styles.icon} />
                                 ),
+                                title: 'Order Track',
+                                headerTitleAlign: "center",
+                                headerTintColor: '#000',
+                                headerTitleStyle: {
+                                    fontWeight: 'bold',
+                                },
                             }} />
                         <Tab.Screen name='Profile' component={Profile}
                             options={{
                                 tabBarIcon: () => (
                                     <Image source={require('../assets/icons/account.png')} style={styles.icon} />
                                 ),
+                                title: "Profile",
+                                headerTitleAlign: "center",
+                                headerShown: false,
                             }} />
                     </Tab.Navigator>
                 </NavigationContainer >

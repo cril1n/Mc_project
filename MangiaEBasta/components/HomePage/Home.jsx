@@ -9,6 +9,8 @@ import { styles } from '../../styles';
 import MenuList from './MenuList';
 import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
+import ProfileInfo from '../Profile/ProfileInfo';
+
 import { useLocation } from '../../model/LocationContext';
 
 const Stack = createStackNavigator();
