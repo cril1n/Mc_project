@@ -15,7 +15,7 @@ export default function MenuMarker({ menu }) {
         >
             <Image
                 source={{ uri: base64WithPrefix }}
-                style={{ width: 30, height: 30, borderRadius:50 , borderColor: 'black', borderWidth:2}} // Specifica le dimensioni desiderate
+                style={{ width: 30, height: 30, borderRadius:20 , borderColor: 'black', borderWidth:2}} // Specifica le dimensioni desiderate
             />
         </Marker>
     );

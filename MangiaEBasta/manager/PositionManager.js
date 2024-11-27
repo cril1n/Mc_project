@@ -20,11 +20,10 @@ export default class PositionManager {
             if (grantedPermission.status === "granted") {
                 this.canUseLocation = true;
                 console.log('Position permission available')
-                return;
+                return true;
             } else {
                 console.log('Position permission still not granted, please accept')
-                await this.getLocationPermission()
-                return;
+                return await this.getLocationPermission()
             }
         } catch (error) {
             console.log(error)
@@ -37,8 +36,10 @@ export default class PositionManager {
             if (permissionResponse.status === "granted") {
                 this.canUseLocation = true;
                 console.log('Position permission now available')
+                return true;
             } else {
                 console.log('Position permission refused')
+                return false;
             }
         } catch (error) {
             console.log(error)
