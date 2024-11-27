@@ -14,11 +14,21 @@ import { useLocation } from '../../model/LocationContext';
 const Stack = createStackNavigator();
 const MenuTab = createMaterialTopTabNavigator();
 
+// TO DO: Se aggiorno la posizione con il testo in PRofile, non mi passa la nuova posizione alle compomenti Mappa e lista
 
-function MenuTabScreen() {
-  let location = useLocation();
+function MenuTabScreen({location, menuList}) {
+  return (
+    <MenuTab.Navigator>
+      <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ location, menuList }} />
+      <MenuTab.Screen name="Menu map" component={MenuMap} initialParams={{ location, menuList }} />
+    </MenuTab.Navigator>
+  )
+}
+
+
+export default function Home() {
+  const { location } = useLocation()
   const [menuList, setMenuList] = useState(null);
-  location = location.location;
 
   useEffect(() => {
     ViewModel.getNearMenus(location.coords.latitude, location.coords.longitude)
@@ -40,19 +50,10 @@ function MenuTabScreen() {
   }
 
   return (
-    <MenuTab.Navigator>
-      <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ location, menuList }} />
-      <MenuTab.Screen name="Menu map" component={MenuMap} initialParams={{ location, menuList }} />
-    </MenuTab.Navigator>
-  )
-}
-
-
-export default function Home() {
-
-  return (
     <Stack.Navigator >
-      <Stack.Screen options={{ headerShown: false }} name="Restaurants " component={MenuTabScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Restaurants ">
+        {props => <MenuTabScreen {...props} location={location} menuList={menuList} />}
+      </Stack.Screen>
       <Stack.Screen name="Menu Details" component={MenuDetails} />
     </Stack.Navigator>
   );
