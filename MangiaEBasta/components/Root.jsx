@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ViewModel from '../viewModel/ViewModel';
 import Home from './HomePage/Home';
 import OrderTrack from './OrderTrack';
-import Profile from './Profile/Profile';
+import Profile from './ProfilePage/Profile';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LocationProvider } from '../model/LocationContext'; // Importa il contesto
 
@@ -43,7 +43,7 @@ export default function Root() {
         <SafeAreaView style={{ flex: 1 }}>
             <LocationProvider initialLocation={initialLocation}>
                 <NavigationContainer>
-                    <Tab.Navigator>
+                    <Tab.Navigator initialRouteName='Profile'>
                         <Tab.Screen name='Restaurants' component={Home}
                             options={{
                                 tabBarIcon: () => (
