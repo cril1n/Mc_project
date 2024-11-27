@@ -78,4 +78,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 0,
   },
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFA500',
+    padding: 16,
+    borderRadius: 25,
+    marginTop: 20,
+  },
 });

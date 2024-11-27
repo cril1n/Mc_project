@@ -34,7 +34,11 @@ export default function Root({ location }) {
                                     <Image source={require('../assets/icons/order.png')} style={styles.icon} />
                                 ),
                                 title: 'Order Track',
-                                headerTitleAlign: "center"
+                                headerTitleAlign: "center",
+                                headerTintColor: '#000',
+                                headerTitleStyle: {
+                                    fontWeight: 'bold',
+                                },
                             }} />
                         <Tab.Screen name='Profile' component={Profile}
                             options={{
@@ -42,7 +46,8 @@ export default function Root({ location }) {
                                     <Image source={require('../assets/icons/account.png')} style={styles.icon} />
                                 ),
                                 title: "Profile",
-                                headerTitleAlign: "center"
+                                headerTitleAlign: "center",
+                                headerShown: false,
                             }} />
                     </Tab.Navigator>
                 </NavigationContainer >

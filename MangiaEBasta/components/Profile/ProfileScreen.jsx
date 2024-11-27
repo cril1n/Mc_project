@@ -20,25 +20,25 @@ export default function ProfileScreen() {
       icon: "person-outline",
       label: "Personal Info",
       component: MaterialIcons,
-      screen: "ProfileInfo",
+      screen: "Profile Info",
     },
     {
       icon: "map-pin",
       label: "Addresses",
       component: Feather,
-      screen: "AddressInfo",
+      screen: "Address Info",
     },
     {
       icon: "shopping-bag",
       label: "Last Order",
       component: Feather,
-      screen: "LastorderInfo",
+      screen: "Last order Info",
     },
     {
       icon: "credit-card",
       label: "Payment Info",
       component: Feather,
-      screen: "PaymentInfo",
+      screen: "Payment Info",
     },
   ];
 
@@ -60,6 +60,10 @@ export default function ProfileScreen() {
       <MaterialIcons name="chevron-right" size={24} color="#666" />
     </TouchableOpacity>
   );
+  /*deleteAccount(){
+    //QUI va il codice per eliminare l'account
+    
+  }*/
 
   return (
     <SafeAreaView
@@ -68,6 +72,7 @@ export default function ProfileScreen() {
         backgroundColor: "#fff",
       }}
     >
+      
       <View style={styles.profileSection}>
         <Image
           source={require("../../assets/profileIcon.png")}
@@ -78,7 +83,8 @@ export default function ProfileScreen() {
 
       <View style={styles.menuContainer}>{menuItems.map(renderMenuItem)}</View>
 
-      <TouchableOpacity style={styles.logoutButton}>
+      <TouchableOpacity style={styles.logoutButton}
+       >
         <Feather name="log-out" size={24} color="#FF6B6B" />
         <Text style={styles.logoutText}> DELETE ACCOUNT</Text>
         <MaterialIcons name="chevron-right" size={24} color="#FF6B6B" />
@@ -86,61 +92,3 @@ export default function ProfileScreen() {
     </SafeAreaView>
   );
 }
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  profileSection: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 12,
-  },
-  profileName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  menuContainer: {
-    backgroundColor: '#F8F9FA',
-    borderRadius: 16,
-    margin: 16,
-    padding: 8,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-  },
-  menuItemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  menuItemText: {
-    marginLeft: 12,
-    fontSize: 16,
-    color: '#333',
-  },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFF0F0',
-    margin: 16,
-    padding: 16,
-    borderRadius: 12,
-  },
-  logoutText: {
-    color: '#FF6B6B',
-    fontSize: 16,
-    fontWeight: '600',
-    flex: 1,
-    marginLeft: 12,
-  },
-});*/
