@@ -5,7 +5,7 @@ export default class CommunicationController {
     static async genericRequest(endpoint, verb, queryParams, bodyParams) {
         const queryParamsFormatted = new URLSearchParams(queryParams).toString();
         const url = this.BASE_URL + endpoint + "?" + queryParamsFormatted;
-        console.log("sending " + verb + " request to: " + url);
+        //console.log("sending " + verb + " request to: " + url);
         let fatchData = {
             method: verb,
             headers: {
@@ -56,7 +56,6 @@ export default class CommunicationController {
         this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
 
         userData.sid = this.sid;
-        //console.log(userData);
         const id = userId;
         const verb = 'PUT';
         const queryParams = {};

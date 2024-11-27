@@ -60,6 +60,7 @@ export default class ViewModel {
             }
             if (uid == dbUid) {
                 console.log("Not first run, sid and uid already in AsyncStorage and user already in database");
+                return false;
             } else {
                 console.log("Not first run, sid and uid already in AsyncStorage but user not in database");
                 try {
@@ -68,6 +69,7 @@ export default class ViewModel {
                     let user = await CommunicationController.fetchUser(uid, sid);
                     await this.stManager.saveUser(JSON.stringify(user));
                     console.log("Utente salvato nel database");
+                    return false;
                 } catch (error) {
                     console.log(error);
                 }
@@ -100,6 +102,7 @@ export default class ViewModel {
                 console.log(error);
             }
             console.log("Nuovo utente salvato nel database");
+            return true;
         }
     }
 
@@ -107,7 +110,7 @@ export default class ViewModel {
     static async initPosition() {
         console.log('Initializing position manager')
         this.psManager = new PositionManager()
-        await this.psManager.checkLocationPermission()
+        return await this.psManager.checkLocationPermission()
     }
 
     // Ricevo la posizione attuale
@@ -183,7 +186,7 @@ export default class ViewModel {
             for (let i = 0; i < menuList.length; i++) {
                 menuList[i] = await this.getMenuWithImage(menuList[i].mid);
             }
-            
+
             //console.log(menuList);
             return menuList;
         } catch (error) {

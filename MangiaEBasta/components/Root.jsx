@@ -1,9 +1,10 @@
-import React from 'react';
-import { Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, View, ActivityIndicator, Text } from 'react-native';
 import { styles } from '../styles';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import ViewModel from '../viewModel/ViewModel';
 import Home from './HomePage/Home';
 import OrderTrack from './OrderTrack';
 import Profile from './Profile';
@@ -12,12 +13,35 @@ import { LocationProvider } from '../model/LocationContext'; // Importa il conte
 
 const Tab = createBottomTabNavigator();
 
-export default function Root({ location }) {
-    //console.log('Root location:', location);
+
+
+export default function Root() {
+    const [initialLocation, setLocation] = useState(null);
+
+    async function getInitialPosition() {
+        try {
+            setLocation(await ViewModel.getCurrentPosition());
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getInitialPosition();
+    }, []);
+
+    if (!initialLocation) {
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size="large" color="#0000ff" />
+                <Text>Loading position...</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <LocationProvider location={{ location }}>
+            <LocationProvider initialLocation={initialLocation}>
                 <NavigationContainer>
                     <Tab.Navigator>
                         <Tab.Screen name='Restaurants' component={Home}

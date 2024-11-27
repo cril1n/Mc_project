@@ -1,41 +1,74 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Button } from 'react-native';
 import ViewModel from './viewModel/ViewModel';
 import Root from './components/Root';
+import { set } from 'react-hook-form';
 
 export default function App() {
 
-  const [initialized, setInitialized] = useState(false);
-  const [location, setLocation] = useState(null);
+  const [isFirstRun, setIsFirstRun] = useState(true);
+  const [locationPermitted, setLocationPermitted] = useState(false);
+  const [locRequestCounter, setLocRequestCounter] = useState(0);
+
+  async function initApp() {
+    try {
+      console.log("initializing app");
+      await ViewModel.initDB();
+      let flag = await ViewModel.checkFirstRun();
+      setIsFirstRun(flag);
+      if (!flag) {
+        console.log("initializing position");
+        await setLocationPermitted(await ViewModel.initPosition())
+        setLocRequestCounter(locRequestCounter + 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-
-    async function initApp() {
-      try {
-        await ViewModel.initApp();
-        loc = await ViewModel.getCurrentPosition();
-        setLocation(loc);
-        //await ViewModel.ResetApp()
-        setInitialized(true);
-      } catch (error) {
-        console.log(error);
-      }
-    }
     initApp();
   }, []);
 
-  if (!initialized) {
+
+  if (isFirstRun) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading app...</Text>
+        <Text>LANDING PAGE</Text>
+        <Button title="start" onPress={() => { setIsFirstRun(false) }} />
       </View>
     )
   }
 
-  return (
-    <Root location={location} />
-  )
+  if (!isFirstRun) {
+    if (!locationPermitted) {
+      if (locRequestCounter > 1) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Location permission refused. Please set the location permission from the device settings. Or re install the app.</Text>
+          </View>
+        )
+      }
+
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Please accept location permission</Text>
+          <Button title="Location permission" onPress={
+            async () => {
+              setLocationPermitted(await ViewModel.initPosition())
+              setLocRequestCounter(locRequestCounter + 1)
+            }}
+          />
+        </View>
+      )
+    }
+
+    if (locationPermitted) {
+      return (
+        <Root />
+      )
+    }
+  }
 
 
 }
