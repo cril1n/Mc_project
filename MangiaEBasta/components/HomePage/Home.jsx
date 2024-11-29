@@ -9,9 +9,10 @@ import { styles } from '../../styles';
 import MenuList from './MenuList';
 import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
-import ProfileInfo from '../Profile/ProfileInfo';
+import MenuCard from './MenuCard';
 
 import { useLocation } from '../../model/LocationContext';
+import OrderTrack from '../OrderTrack';
 
 const Stack = createStackNavigator();
 const MenuTab = createMaterialTopTabNavigator();
@@ -21,16 +22,17 @@ const MenuTab = createMaterialTopTabNavigator();
 function MenuTabScreen({location, menuList}) {
   return (
     <MenuTab.Navigator>
-      <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ location, menuList }} />
+      <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ menuList }} />
       <MenuTab.Screen name="Menu map" component={MenuMap} initialParams={{ location, menuList }} />
     </MenuTab.Navigator>
   )
 }
 
 
-export default function Home() {
+export default function Home({navigation}) {
   const { location } = useLocation()
   const [menuList, setMenuList] = useState(null);
+
 
   useEffect(() => {
     ViewModel.getNearMenus(location.coords.latitude, location.coords.longitude)
@@ -53,10 +55,11 @@ export default function Home() {
 
   return (
     <Stack.Navigator >
-      <Stack.Screen options={{ headerShown: false }} name="Restaurants ">
+      <Stack.Screen options={{ headerShown: false }} name="Restaurants " >
         {props => <MenuTabScreen {...props} location={location} menuList={menuList} />}
       </Stack.Screen>
-      <Stack.Screen name="Menu Details" component={MenuDetails} />
+      <Stack.Screen name="Menu Card" component={MenuCard} />
+      <Stack.Screen name="Menu Details" component={MenuDetails} navigation={navigation} />
     </Stack.Navigator>
   );
 }

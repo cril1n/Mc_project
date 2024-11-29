@@ -1,10 +1,13 @@
-import { View, Text, Button } from 'react-native';
+import { ScrollView } from 'react-native';
+import MenuCard from './MenuCard';
 
-export default function MenuList({ navigation }) {
+export default function MenuList({ route, navigation }) {
+    //console.log(navigation)
+    const { menuList } = route.params;
 
     return (
-        <View>
-            <Text>MenuList</Text>
-        </View>
+        <ScrollView>
+            {menuList.map((menu) => (<MenuCard key={menu.mid} menu={menu} navigation={navigation} />))}
+        </ScrollView>
     );
 }

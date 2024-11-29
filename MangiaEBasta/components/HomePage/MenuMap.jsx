@@ -4,9 +4,9 @@ import { styles } from '../../styles';
 
 import MenuMarker from './MenuMarker';
 import MapView from 'react-native-maps';
-import { useLocation } from '../../model/LocationContext';
 
-export default function MenuMap({ navigation, route }) {
+export default function MenuMap({ route }) {
+
 
     const { location, menuList } = route.params;
     const [region, setRegion] = useState(null);

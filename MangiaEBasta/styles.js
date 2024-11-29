@@ -18,6 +18,14 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  card: {
+    margin: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -40,6 +48,12 @@ export const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginBottom: 12,
+  },
+  cardImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+    margin:8,
   },
   menuContainer: {
     backgroundColor: "#F8F9FA",
