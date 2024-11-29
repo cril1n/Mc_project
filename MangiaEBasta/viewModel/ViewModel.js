@@ -12,18 +12,6 @@ export default class ViewModel {
     static stManager = null;
 
     //APP START
-    // Inizializzo l'applicazione
-    static async initApp() {
-        console.log("initializing app");
-        try {
-            await this.initDB();
-            await this.checkFirstRun();
-            await this.initPosition();
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
 
     // Inizializzo il database
     static async initDB() {
@@ -156,9 +144,9 @@ export default class ViewModel {
 
 
     //MENU AND IMAGES
-    static async getMenuWithImage(mid) {
+    static async getMenuWithImage(menu) {
         try {
-            let menu = await CommunicationController.getMenu(48.4786, 9.2271, this.sid , mid);
+           
             let imageVersion = menu.imageVersion;
             let DBImageVersion = await this.stManager.getMenuImageVersionDB(menu.mid);
 
@@ -182,12 +170,12 @@ export default class ViewModel {
         try {
             let menuList = await CommunicationController.getNearMenus(lat, lng, this.sid);
             menuList = menuList.filter(menu => menu.name !== 'string');
-    
+            menuList = menuList.sort((a, b) => a.deliveryTime - b.deliveryTime)
+      
             for (let i = 0; i < menuList.length; i++) {
-                menuList[i] = await this.getMenuWithImage(menuList[i].mid);
+                menuList[i] = await this.getMenuWithImage(menuList[i]);
             }
-
-            //console.log(menuList);
+            
             return menuList;
         } catch (error) {
             console.log(error);

@@ -43,14 +43,14 @@ export default function Root() {
         <SafeAreaView style={{ flex: 1 }}>
             <LocationProvider initialLocation={initialLocation}>
                 <NavigationContainer>
-                    <Tab.Navigator initialRouteName='Profile'>
-                        <Tab.Screen name='Restaurants' component={Home}
+                    <Tab.Navigator initialRouteName='Homepage'>
+                        <Tab.Screen name='Homepage' component={Home}
                             options={{
                                 tabBarIcon: () => (
                                     <Image source={require('../assets/icons/restaurant.png')} style={styles.icon} />
                                 ),
                                 headerShown: false,
-                                title: 'Restaurants',
+                                title: 'Homepage',
                             }} />
                         <Tab.Screen name='OrderTrack' component={OrderTrack}
                             options={{
