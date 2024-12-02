@@ -11,22 +11,17 @@ import {
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../../styles";
+import { useUser } from "../../model/UserContext";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-
+  const { user } = useUser();
   const menuItems = [
     {
       icon: "person-outline",
       label: "Personal Info",
       component: MaterialIcons,
       screen: "Profile Info",
-    },
-    {
-      icon: "map-pin",
-      label: "Addresses",
-      component: Feather,
-      screen: "Address Info",
     },
     {
       icon: "shopping-bag",
@@ -78,7 +73,7 @@ export default function ProfileScreen() {
           source={require("../../assets/profileIcon.png")}
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>{/*QUI va il codice per mettere nome e cognome dell'utente*/}Guerine Houssem</Text>
+        <Text style={styles.profileName}>{user.firstName} {user.lastName}</Text>
       </View>
 
       <View style={styles.menuContainer}>{menuItems.map(renderMenuItem)}</View>

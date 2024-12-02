@@ -4,6 +4,7 @@ import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
 
 
+
 export default class ViewModel {
 
     static sid = null;
@@ -36,26 +37,18 @@ export default class ViewModel {
         } catch (error) {
             console.log(error);
         }
-        // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nel database
+        // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nell'AsyncStorage
         if (sid && uid) {
             this.sid = sid;
-            let dbUid = null;
-            try {
-                user = JSON.parse(await this.stManager.getFirstUser());
-                dbUid = user.uid;
-            } catch (error) {
-                console.log(error);
-            }
-            if (uid == dbUid) {
-                console.log("Not first run, sid and uid already in AsyncStorage and user already in database");
+            let user = await AsyncStorage.getItem("user");
+            if(user.uid == uid && user.sid == sid){
+                console.log("Not first run, sid, uid and user already in AsyncStorage");
                 return false;
             } else {
-                console.log("Not first run, sid and uid already in AsyncStorage but user not in database");
+                console.log("Not first run, sid and uid already in AsyncStorage but user not present");
                 try {
-                    this.stManager.resetDB();
-                    this.stManager.openDB();
                     let user = await CommunicationController.fetchUser(uid, sid);
-                    await this.stManager.saveUser(JSON.stringify(user));
+                    await AsyncStorage.setItem("user", JSON.stringify(user));
                     console.log("Utente salvato nel database");
                     return false;
                 } catch (error) {
@@ -63,7 +56,7 @@ export default class ViewModel {
                 }
             }
         } else {
-            // Se è il primo avvio, chiedo al server un nuovo utente e salvo i dati nel database
+            // Se è il primo avvio, chiedo al server un nuovo utente e salvo nell'asyncStorage
             console.log("first run");
             // Creo il nuovo utente nel server
             let response = null;
@@ -75,21 +68,20 @@ export default class ViewModel {
             console.log('Nuovo utente creato');
             newSid = response.sid;
             newUid = response.uid;
+
             // Salvo i nuovi sid e id nel AsyncStorage
             await AsyncStorage.setItem("sid", newSid);
             this.sid = newSid;
             await AsyncStorage.setItem("uid", JSON.stringify(newUid));
             console.log("Nuovi sid e uid salvati in AsyncStorage");
-            // Recupero i dati del nuovo utente e lo salvo nel database
+            // Recupero i dati del nuovo utente dal server e li salvo nell'asyncStorage
             try {
-                this.stManager.resetDB();
-                this.stManager.openDB();
                 let user = await CommunicationController.fetchUser(newUid, newSid);
-                await this.stManager.saveUser(JSON.stringify(user));
+                await AsyncStorage.setItem("user", JSON.stringify(user));
             } catch (error) {
                 console.log(error);
             }
-            console.log("Nuovo utente salvato nel database");
+            console.log("Nuovo utente salvato nel AsyncStorage");
             return true;
         }
     }
@@ -125,23 +117,21 @@ export default class ViewModel {
     }
 
     //USER
-
-    static async getUsersTable() {
+    static async getUser() {
         try {
-            return await this.stManager.getUsersTable();
+            let user = await AsyncStorage.getItem("user");
+            return JSON.parse(user);
         } catch (error) {
             console.log(error);
         }
     }
-
-    static async getFirstUser() {
+    static async updateUser(user) {
         try {
-            return await this.stManager.getFirstUser();
+            await AsyncStorage.setItem("user", JSON.stringify(user));
         } catch (error) {
             console.log(error);
         }
     }
-
 
     //MENU AND IMAGES
     static async getMenuWithImage(menu) {
@@ -152,7 +142,7 @@ export default class ViewModel {
 
             if (imageVersion != DBImageVersion) {
                 console.log("Image not up to date");
-                let image = await CommunicationController.getMenuImage(mid, this.sid);
+                let image = await CommunicationController.getMenuImage(menu.mid, this.sid);
                 await this.stManager.saveMenuImage(image.base64, imageVersion, menu.mid);
                 menu.imageCode = image.base64;
             } else {
