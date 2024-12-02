@@ -38,6 +38,7 @@ export default class ViewModel {
         }
         // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nel database
         if (sid && uid) {
+            console.log(sid, uid);
             this.sid = sid;
             let dbUid = null;
             try {
@@ -142,8 +143,23 @@ export default class ViewModel {
         }
     }
 
+    static async checkUserInfo(user) { 
+        return false;
+    }
+
 
     //MENU AND IMAGES
+
+    static async getMenuComplete(lat, lng, mid) {
+        try {
+            let menu = await CommunicationController.getMenu(lat, lng, this.sid, mid);
+            return menu;
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
     static async getMenuWithImage(menu) {
         try {
            
@@ -152,7 +168,7 @@ export default class ViewModel {
 
             if (imageVersion != DBImageVersion) {
                 console.log("Image not up to date");
-                let image = await CommunicationController.getMenuImage(mid, this.sid);
+                let image = await CommunicationController.getMenuImage(menu.mid, this.sid);
                 await this.stManager.saveMenuImage(image.base64, imageVersion, menu.mid);
                 menu.imageCode = image.base64;
             } else {
@@ -181,5 +197,32 @@ export default class ViewModel {
             console.log(error);
         }  
     }
+
+    static async sendOrder(mid, lat, lng) {
+        try {
+            let response = await CommunicationController.sendOrder(mid, lat, lng, this.sid);
+            // if (response.status == 200) {
+            //     AsyncStorage.setItem("lastOid", response.oid);
+                
+            // }
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async getLastOrderInfo(oid = 308) {
+        // let oid = AsyncStorage.getItem("lastOid")
+        if (!oid) { 
+            return null;
+        }
+        try {
+            return await CommunicationController.getOrderInfo(oid, this.sid);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+ 
 
 }

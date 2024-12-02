@@ -8,6 +8,7 @@ import PaymentInfo from './PaymentInfo';
 
 const Stack = createStackNavigator();
 
+
 export default function Profile() {
   return (
     <Stack.Navigator

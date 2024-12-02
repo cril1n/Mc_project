@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import { Marker } from 'react-native-maps';
 
 
-export default function MenuMarker({ menu }) {
+export default function MenuMarker({ menu, navigation }) {
 
     const base64WithPrefix = menu.imageCode ? `data:image/jpeg;base64,${menu.imageCode}` : null;
 
@@ -12,6 +12,7 @@ export default function MenuMarker({ menu }) {
             coordinate={{ latitude: menu.location.lat, longitude: menu.location.lng }}
             title={menu.name}
             description={menu.shortDescription}
+            onCalloutPress={() => navigation.navigate('Menu Details', { menu: menu })}
         >
             <Image
                 source={{ uri: base64WithPrefix }}

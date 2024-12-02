@@ -1,3 +1,5 @@
+//sid = U7s8Ra3puQ7wMw4obaqNjtflYxsDT443uh8wWeI41giDTLxUeeY3T8IqM4HwoJP4
+//uid = 23666
 
 export default class CommunicationController {
     static BASE_URL = null;
@@ -92,4 +94,28 @@ export default class CommunicationController {
         const bodyParams = {};
         return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
     }
+
+    static async sendOrder(mid, userLat, userLng, userSid) {
+        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/menu/';
+
+        deliveryLoc = { lat: userLat, lng: userLng };
+
+        const endPoint = mid + '/buy';
+        const verb = 'POST';
+        const queryParams = {};
+        const bodyParams = { sid: userSid, deliveryLocation: deliveryLoc };
+        return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
+    }
+
+    static async getOrderInfo(oid, userSid) {
+        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/order/';
+
+        const endPoint = oid;
+        const verb = 'GET';
+        const queryParams = { sid: userSid };
+        const bodyParams = {};
+        return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
+    }
+
+   
 }
