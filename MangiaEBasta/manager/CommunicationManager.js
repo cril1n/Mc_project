@@ -1,4 +1,4 @@
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default class CommunicationController {
     static BASE_URL = null;
 
@@ -52,15 +52,26 @@ export default class CommunicationController {
         return await this.genericRequest(id, verb, queryParams, bodyParams);
     }
 
-    static async modifyUser(userId, userData) {
-        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
+    static async modifyUser(userData) {
 
-        userData.sid = this.sid;
-        const id = userId;
+        console.log("userdata (Dentro modifyuser):", userData);
+        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
+        console.log(userData.uid);
+        const id = parseInt(userData.uid);
+        const keysToRemove = ['uid', 'orderStatus', 'lastOid']; // Sostituisci con le chiavi che vuoi rimuovere
+        keysToRemove.forEach((key) => {
+            delete userData[key];
+        });
+        console.log(userData);
         const verb = 'PUT';
         const queryParams = {};
-        const bodyParams = userData;
-        return await this.genericRequest(id, verb, queryParams, bodyParams);
+        const bodyParams = userData
+        try{
+            return await this.genericRequest(id, verb, queryParams, bodyParams);
+        }catch(error){
+            console.log("ERRORE IN MODIFYUSER:", error);
+        }
+        
     }
 
     static async getMenu(userLat, userLng, userSid, mid) {
