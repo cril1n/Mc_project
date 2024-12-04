@@ -2,12 +2,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunicationController from '../manager/CommunicationManager';
 import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
-
+import { useUser, setUser } from '../model/UserContext';
 
 
 export default class ViewModel {
 
+    // static user = null;
+    // static setUser = null;
+
+    // static initializeUser() {
+    //     const { user, setUser } = useUser();
+    //     this.user = user;
+    //     this.setUser = setUser;
+    // }
+
     static sid = null;
+    static uid = null;
 
     static psManager = null;
     static stManager = null;
@@ -41,8 +51,9 @@ export default class ViewModel {
         if (sid && uid) {
             console.log(sid, uid);
             this.sid = sid;
-            let user = await AsyncStorage.getItem("user");
-            if(user.uid == uid && user.sid == sid){
+            this.uid = uid;
+            let user = JSON.parse(await AsyncStorage.getItem("user"));
+            if (user.uid == uid) {
                 console.log("Not first run, sid, uid and user already in AsyncStorage");
                 return false;
             } else {
@@ -134,6 +145,7 @@ export default class ViewModel {
         }
     }
 
+
     //MENU AND IMAGES
 
     static async getMenuComplete(lat, lng, mid) {
@@ -148,7 +160,7 @@ export default class ViewModel {
 
     static async getMenuWithImage(menu) {
         try {
-           
+
             let imageVersion = menu.imageVersion;
             let DBImageVersion = await this.stManager.getMenuImageVersionDB(menu.mid);
 
@@ -173,42 +185,60 @@ export default class ViewModel {
             let menuList = await CommunicationController.getNearMenus(lat, lng, this.sid);
             menuList = menuList.filter(menu => menu.name !== 'string');
             menuList = menuList.sort((a, b) => a.deliveryTime - b.deliveryTime)
-      
+
             for (let i = 0; i < menuList.length; i++) {
                 menuList[i] = await this.getMenuWithImage(menuList[i]);
             }
-            
+
             return menuList;
         } catch (error) {
             console.log(error);
-        }  
-    }
-
-    static async sendOrder(mid, lat, lng) {
-        try {
-            let response = await CommunicationController.sendOrder(mid, lat, lng, this.sid);
-            // if (response.status == 200) {
-            //     AsyncStorage.setItem("lastOid", response.oid);
-                
-            // }
-            return response;
-        } catch (error) {
-            console.log(error);
         }
     }
 
-    static async getLastOrderInfo(oid = 308) {
-        // let oid = AsyncStorage.getItem("lastOid")
-        if (!oid) { 
-            return null;
+    //ORDER
+
+    static async checkUserInfoBeforeOrder(user) {
+        if (!user.firstName || !user.lastName || !user.cardFullName || !user.cardNumber || !user.cardCVV || !user.cardExpireMonth || !user.cardExpireYear) {
+            return false;
         }
+        return true;
+    }
+
+    static async getLastOrderInfo(oid) {
         try {
+            console.log("Getting last order info...");
             return await CommunicationController.getOrderInfo(oid, this.sid);
         } catch (error) {
             console.log(error);
         }
     }
 
- 
+    static async sendOrder(mid, lat, lng) {
+        try {
+            console.log("Sending order...");
+            let response = await CommunicationController.sendOrder(mid, lat, lng, this.sid);
+            console.log("Order sent");
+            console.log("Updating user after order...");
+            await this.updateUserAfterOrder();
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async updateUserAfterOrder() {
+        const { setUser } = useUser();
+
+        try {
+            let user = await CommunicationController.fetchUser(this.uid, this.sid);
+            setUser(user);
+            await AsyncStorage.setItem("user", JSON.stringify(user));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 
 }

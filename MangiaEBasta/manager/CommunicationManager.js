@@ -44,7 +44,7 @@ export default class CommunicationController {
     static async fetchUser(userId, userSid) {
         this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
 
-        console.log("fetching user with id: " + userId);
+        console.log("fetching user with id: " + userId + " and sid: " + userSid);
         const id = userId;
         const verb = 'GET';
         const queryParams = { sid: userSid };

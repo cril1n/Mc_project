@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, Button, Alert, ActivityIndicator } from 'react-native';
 import { useLocation } from '../../model/LocationContext';
+import { useUser } from '../../model/UserContext';
 import ViewModel from '../../viewModel/ViewModel';
 
 export default function MenuDetails({ route, navigation }) {
     const { menu } = route.params;
     const { location } = useLocation();
+    const { user } = useUser();
     const [base64WithPrefix, setImage] = useState(null);
     const [menuComplete, setMenu] = useState(null);
 
@@ -18,7 +20,7 @@ export default function MenuDetails({ route, navigation }) {
 
     const sendOrder = async (mid) => {
         try {
-            let validUser = await ViewModel.checkUserInfo(user);
+            let validUser = await ViewModel.checkUserInfoBeforeOrder(user);
 
             if (!validUser) {
                 Alert.alert(
@@ -36,43 +38,69 @@ export default function MenuDetails({ route, navigation }) {
                 return;
             }
 
-            let lastOrderInfo = await ViewModel.getLastOrderInfo();
-            if (lastOrderInfo.status == 'ON_DELIVERY') {
-                Alert.alert(
-                    "Ordine in Corso",
-                    "Hai già un ordine in corso. Non puoi effettuarne un altro finché non viene consegnato.",
-                    [
-                        {
-                            text: "OK",
-                            style: "default"
-                        },
-                        {
-                            text: "Segui il tuo ordine",
-                            onPress: () => navigation.navigate('OrderTrack'),
-                            style: "default"
-                        }
-                    ],
-                    { cancelable: false }
-                )
+            console.log("User before last order check:", user);
+            if (user.lastOid != null) {
+                let lastOrderInfo = await ViewModel.getLastOrderInfo(user.lastOid)
+                if (lastOrderInfo.status == 'COMPLETED') {
+                    let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude);
+                    console.log(orderInfo);
+                    if (orderInfo) {
+                        console.log(user);
+                        Alert.alert(
+                            "Ordine Confermato",
+                            "Il tuo ordine è stato confermato con successo.",
+                            [
+                                {
+                                    text: "OK",
+                                    onPress: () => navigation.navigate('OrderTrack'),
+                                    style: "default"
+                                }
+                            ],
+                            { cancelable: false }
+                        );
+                    }
+                    return;
+                }
+
+            } else if (user.lastOid == null) {
+                let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude);
+                console.log("Order info:", orderInfo);
+                if (orderInfo) {
+                    console.log(user);
+                    Alert.alert(
+                        "Ordine Confermato",
+                        "Il tuo ordine è stato confermato con successo.",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => navigation.navigate('OrderTrack'),
+                                style: "default"
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                }
                 return;
             }
 
-            let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude);
-            console.log(orderInfo);
-            if (orderInfo) {
-                Alert.alert(
-                    "Ordine Confermato",
-                    "Il tuo ordine è stato confermato con successo.",
-                    [
-                        {
-                            text: "OK",
-                            onPress: () => navigation.navigate('OrderTrack'),
-                            style: "default"
-                        }
-                    ],
-                    { cancelable: false}
-                );
-            }
+            Alert.alert(
+                "Ordine in Corso",
+                "Hai già un ordine in corso. Non puoi effettuarne un altro finché non viene consegnato.",
+                [
+                    {
+                        text: "OK",
+                        style: "default"
+                    },
+                    {
+                        text: "Segui il tuo ordine",
+                        onPress: () => navigation.navigate('OrderTrack'),
+                        style: "default"
+                    }
+                ],
+                { cancelable: false }
+            )
+
+
         } catch (error) {
             console.log(error);
         }
@@ -91,17 +119,17 @@ export default function MenuDetails({ route, navigation }) {
         <View style={styles.container}>
             <Text style={styles.title}>{menuComplete.name}</Text>
             {base64WithPrefix && (
-                <Image 
-                    source={{ uri: base64WithPrefix }} 
-                    style={styles.image} 
+                <Image
+                    source={{ uri: base64WithPrefix }}
+                    style={styles.image}
                 />
             )}
             <Text style={styles.description}>{menuComplete.description}</Text>
             <Text style={styles.deliveryTime}>Delivery Time: {menuComplete.deliveryTime} minutes</Text>
             {/* Aggiungi ulteriori dettagli del menu qui */}
-            <Button 
-                title="Place Order" 
-                onPress={() => sendOrder(menuComplete.mid)} 
+            <Button
+                title="Place Order"
+                onPress={() => sendOrder(menuComplete.mid)}
             />
         </View>
     );

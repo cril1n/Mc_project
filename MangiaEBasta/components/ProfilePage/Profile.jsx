@@ -5,12 +5,10 @@ import ProfileInfo from './ProfileInfo';
 import LastorderInfo from './LastorderInfo';
 import PaymentInfo from './PaymentInfo';
 import Form from './Form';
-import ViewModel from '../../viewModel/ViewModel';
 import { View, Text } from 'react-native';
 import { useUser } from '../../model/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-const Stack = createStackNavigator();
 
+const Stack = createStackNavigator();
 
 export default function Profile() {
 
