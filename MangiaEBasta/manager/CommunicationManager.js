@@ -56,13 +56,13 @@ export default class CommunicationController {
 
         console.log("userdata (Dentro modifyuser):", userData);
         this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
-        console.log(userData.uid);
+        console.log("userData.uid (dentro modifyUser):", userData.uid);
         const id = parseInt(userData.uid);
         const keysToRemove = ['uid', 'orderStatus', 'lastOid']; // Sostituisci con le chiavi che vuoi rimuovere
         keysToRemove.forEach((key) => {
             delete userData[key];
         });
-        console.log(userData);
+        console.log("userData post keysRemoved (dentro modifyuser):",userData);
         const verb = 'PUT';
         const queryParams = {};
         const bodyParams = userData

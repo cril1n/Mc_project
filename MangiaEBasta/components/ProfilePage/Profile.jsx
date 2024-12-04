@@ -5,9 +5,11 @@ import ProfileInfo from './ProfileInfo';
 import LastorderInfo from './LastorderInfo';
 import PaymentInfo from './PaymentInfo';
 import Form from './Form';
+import CommunicationController from '../../manager/CommunicationManager';
+import ViewModel from '../../viewModel/ViewModel';
 import { View, Text } from 'react-native';
 import { useUser } from '../../model/UserContext';
-
+import _ from 'lodash';
 const Stack = createStackNavigator();
 
 export default function Profile() {
@@ -16,7 +18,12 @@ export default function Profile() {
 
   const checkProfile = async () => {
     console.log('Profile page');
-    console.log("User memorizzato nel contesto", user);
+    const savedUser = await ViewModel.getUser();
+    if (!_.isEqual(user, savedUser)) {
+      console.log("Users diversi");
+      await CommunicationController.modifyUser(user);
+      await ViewModel.updateUser(user);
+    }
   }
   
   useEffect(() => {

@@ -12,6 +12,8 @@ import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../../styles";
 import { useUser } from "../../model/UserContext";
+import ViewModel from "../../viewModel/ViewModel";
+
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -55,10 +57,11 @@ export default function ProfileScreen() {
       <MaterialIcons name="chevron-right" size={24} color="#666" />
     </TouchableOpacity>
   );
-  /*deleteAccount(){
-    //QUI va il codice per eliminare l'account
-    
-  }*/
+  
+  const deleteAccount = async () => {
+    //NON FUNZIONA RESTART [TypeError: Cannot read property 'Restart' of null]
+    await ViewModel.deleteAccount();
+  }
 
   return (
     <SafeAreaView
@@ -78,7 +81,7 @@ export default function ProfileScreen() {
 
       <View style={styles.menuContainer}>{menuItems.map(renderMenuItem)}</View>
 
-      <TouchableOpacity style={styles.logoutButton}
+      <TouchableOpacity style={styles.logoutButton} onPress={deleteAccount}
        >
         <Feather name="log-out" size={24} color="#FF6B6B" />
         <Text style={styles.logoutText}> DELETE ACCOUNT</Text>
