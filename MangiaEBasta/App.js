@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useEffect, useState} from 'react';
+import { View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
 import ViewModel from './viewModel/ViewModel';
 import Root from './components/Root';
 
@@ -32,10 +32,11 @@ export default function App() {
 
   if (isFirstRun) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>LANDING PAGE</Text>
-        <Button title="start" onPress={() => { setIsFirstRun(false) }} />
-      </View>
+      <ImageBackground source={require('./assets/landingPageBackground.png')} style={styles.background}>
+        <TouchableOpacity style={styles.button} onPress={() => { setIsFirstRun(false) }}>
+          <Text style={styles.buttonText}>START</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     )
   }
 
@@ -68,7 +69,26 @@ export default function App() {
       )
     }
   }
-
-
 }
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  button: {
+    position: 'absolute',
+    bottom: 90,
+    width: '80%',
+    backgroundColor: 'orange',
+    padding: 15,
+    alignItems: 'center',
+    borderRadius: 10
+  },
+  buttonText: {
+    fontSize: 30,
+    color: 'white',
+    fontWeight: 'bold'
+  }
+});
 

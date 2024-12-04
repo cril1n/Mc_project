@@ -6,7 +6,7 @@ export default function MenuDetail({navigation}) {
     return (
         <View>
             <Text>MenuDetail</Text>
-            <Button title="Go to order track" onPress={() => navigation.navigate('OrderTrack')} />
+            <Button title="Go to order track" onPress={() => navigation.navigate('Profile Info')} />
         </View>
     );
 }

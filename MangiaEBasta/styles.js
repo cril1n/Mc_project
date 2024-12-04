@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 20,
   },
   containerNavigator:{
     flex:1,
@@ -100,5 +101,26 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 25,
     marginTop: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+      borderWidth: 1,
+      borderColor: '#ccc',
+      padding: 10,
+      marginTop: 10,
+      marginBottom: 20, // Increased margin between boxes
+      width: '40%', // Shortened width
+  },
+  submitButton: {
+      padding: 50, // Increased button size
+  },
+  successText: {
+      color: 'green',
+      marginTop: 10,
+      fontSize: 17,
   },
 });

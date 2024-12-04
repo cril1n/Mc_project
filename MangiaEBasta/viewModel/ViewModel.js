@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunicationController from '../manager/CommunicationManager';
 import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
-
+import RNRestart from 'react-native-restart';
 
 
 export default class ViewModel {
@@ -40,8 +40,8 @@ export default class ViewModel {
         // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nell'AsyncStorage
         if (sid && uid) {
             this.sid = sid;
-            let user = await AsyncStorage.getItem("user");
-            if(user.uid == uid && user.sid == sid){
+            let user = JSON.parse(await AsyncStorage.getItem("user"));
+            if(user.uid == uid){
                 console.log("Not first run, sid, uid and user already in AsyncStorage");
                 return false;
             } else {
@@ -115,7 +115,15 @@ export default class ViewModel {
             console.log(error);
         }
     }
-
+    //SESSIONID
+    static async getSid() {
+        try {
+            let sid = await AsyncStorage.getItem("sid");
+            return sid;
+        } catch (error) {
+            console.log(error);
+        }
+    }
     //USER
     static async getUser() {
         try {
@@ -132,7 +140,18 @@ export default class ViewModel {
             console.log(error);
         }
     }
-
+    static async deleteAccount(){
+        try {
+            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("sid");
+            await AsyncStorage.removeItem("uid");
+            console.log("Account deleted");
+            this.restartApp();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
     //MENU AND IMAGES
     static async getMenuWithImage(menu) {
         try {
@@ -172,4 +191,56 @@ export default class ViewModel {
         }  
     }
 
+    // CARD AND PAYMENT
+
+    static validateCardField(field, value) {
+        let error = null;
+    
+        switch (field) {
+            case "cardFullName":
+                // Controllo: deve essere una stringa con solo caratteri e un solo spazio
+                if (!/^[a-zA-Z]+ [a-zA-Z]+$/.test(value)) {
+                    error = "The card full name must be a valid string with only letters and a single space.";
+                }
+                break;
+    
+            case "cardNumber":
+                // Controllo: deve essere una stringa di 16 cifre
+                if (!/^\d{16}$/.test(value)) {
+                    error = "The card number must be exactly 16 digits.";
+                }
+                break;
+    
+            case "cardExpireMonth":
+                // Controllo: deve essere un valore compreso tra "01" e "12"
+                if (!/^(0[1-9]|1[0-2])$/.test(value)) {
+                    error = "The expiration month must be a valid 2-digit number (01-12).";
+                }
+                break;
+    
+            case "cardExpireYear":
+                // Controllo: deve essere una stringa di 2 cifre
+                if (!/^\d{2}$/.test(value)) {
+                    error = "The expiration year must be a valid 2-digit number.";
+                }
+                break;
+    
+            case "cardCVV":
+                // Controllo: deve essere una stringa di 3 cifre
+                if (!/^\d{3}$/.test(value)) {
+                    error = "The CVV must be exactly 3 digits.";
+                }
+                break;
+    
+            default:
+                // Per campi non previsti
+                error = "Invalid field.";
+        }
+    
+        return error;
+    }
+    static restartApp(){
+        RNRestart.Restart();
+      };
 }
+
