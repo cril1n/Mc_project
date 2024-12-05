@@ -9,12 +9,25 @@ export default function OrderTrack() {
     const { user } = useUser();
     const [order, setOrder] = useState(null);
 
+    async function setLastScreen(screen) {
+        try {
+            await ViewModel.setLastScreen(screen);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     useFocusEffect(
+        
         React.useCallback(() => {
+            setLastScreen('OrderTrack')
             let isActive = true;
 
             const fetchOrder = async () => {
+                if (user.lastOid == null) {
+                    return;
+                }
                 try {
                     const orderInfo = await ViewModel.getLastOrderInfo(user.lastOid);
                     console.log("Last order info in Order track:", orderInfo);

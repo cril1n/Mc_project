@@ -22,8 +22,12 @@ export default class CommunicationController {
         const status = httpResponse.status;
         if (status >= 200 && status <= 299) {
             console.log('Request ' + verb + ' completed');
-            let deserializedObject = await httpResponse.json();
-            return deserializedObject;
+            if (status !== 204) {
+                let deserializedObject = await httpResponse.json();
+                return deserializedObject;
+            } else {
+                return null;
+            }
         } else {
             console.log(httpResponse);
             const message = await httpResponse.text();

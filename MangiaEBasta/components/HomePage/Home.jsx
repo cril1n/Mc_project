@@ -9,7 +9,9 @@ import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
 import MenuCard from './MenuCard';
 import { useLocation } from '../../model/LocationContext';
-import OrderCheckOut from './OrderCheckOut';
+import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
+
 
 const Stack = createStackNavigator();
 const MenuTab = createMaterialTopTabNavigator();
@@ -29,6 +31,18 @@ function MenuTabScreen({location, menuList}) {
 export default function Home({navigation}) {
   const { location } = useLocation()
   const [menuList, setMenuList] = useState(null);
+
+  async function setLastScreen(screen) {
+    try {
+        await ViewModel.setLastScreen(screen);
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+    setLastScreen('Homepage')}));
 
 
   useEffect(() => {

@@ -11,12 +11,14 @@ import Profile from "./ProfilePage/Profile";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LocationProvider } from "../model/LocationContext"; // Importa il contesto
 import { UserProvider } from "../model/UserContext";
+import { get } from "lodash";
 
 const Tab = createBottomTabNavigator();
 
 export default function Root() {
   const [initialLocation, setLocation] = useState(null);
   const [initialUser, setUser] = useState(null);
+  const [lastScreen, setLastScreen] = useState("Homepage");
 
   async function getInitialPosition() {
     try {
@@ -32,10 +34,18 @@ export default function Root() {
       console.log(error);
     }
   }
+  async function getLastScreen() {
+    try {
+      setLastScreen(await ViewModel.getLastScreen());
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     getInitialPosition();
     getInitialUser();
+    getLastScreen();
   }, []);
 
   if (!initialLocation) {
@@ -60,7 +70,7 @@ export default function Root() {
       <LocationProvider initialLocation={initialLocation}>
         <UserProvider initialUser={initialUser}>
           <NavigationContainer>
-            <Tab.Navigator initialRouteName="Homepage">
+            <Tab.Navigator initialRouteName= {lastScreen}>
               <Tab.Screen
                 name="Homepage"
                 component={Home}

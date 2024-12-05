@@ -15,6 +15,7 @@ import { useUser } from "../../model/UserContext";
 import ViewModel from "../../viewModel/ViewModel";
 
 
+
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useUser();
@@ -38,6 +39,8 @@ export default function ProfileScreen() {
       screen: "Payment Info",
     },
   ];
+
+  
 
   const renderMenuItem = ({
     icon,
