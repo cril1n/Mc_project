@@ -137,27 +137,15 @@ export default class ViewModel {
             console.log(error);
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 2f137d873d8db72162f839c4f4d81b9d27eaf137
     //USERID
     static async getUid() {
         try {
             let uid = await AsyncStorage.getItem("uid");
-<<<<<<< HEAD
             return JSON.parse(uid);
-=======
-            return uid;
->>>>>>> 2f137d873d8db72162f839c4f4d81b9d27eaf137
         } catch (error) {
             console.log(error);
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 2f137d873d8db72162f839c4f4d81b9d27eaf137
     //USER
     static async getUser() {
         try {
