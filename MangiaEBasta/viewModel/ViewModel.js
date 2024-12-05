@@ -124,6 +124,15 @@ export default class ViewModel {
             console.log(error);
         }
     }
+    //USERID
+    static async getUid() {
+        try {
+            let uid = await AsyncStorage.getItem("uid");
+            return JSON.parse(uid);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     //USER
     static async getUser() {
         try {

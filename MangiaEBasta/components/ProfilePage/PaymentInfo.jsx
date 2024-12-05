@@ -15,6 +15,7 @@ export default function PaymentInfo() {
 
   const handleSave = async () => {
     const savedSid = await ViewModel.getSid();
+    const savedUid = await ViewModel.getUid();
     const updatedUser = {
       ...user,
       cardNumber,
@@ -23,6 +24,7 @@ export default function PaymentInfo() {
       cardCVV,
       cardFullName,
       sid: savedSid,
+      uid: savedUid,
     };
     const error = (cardNumber && ViewModel.validateCardField('cardNumber', cardNumber)) ||
                   (cardExpireMonth && ViewModel.validateCardField('cardExpireMonth', cardExpireMonth)) ||
@@ -39,14 +41,15 @@ export default function PaymentInfo() {
     setUser(updatedUser);
     setIsEditing(false);
   };
-
+// NON CAPISCO PERCHè SE ENTRO IN MODALITà EDIT MI SPARISCONO CERTI CAMPI A SCHERMO
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
+      
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <KeyboardAvoidingView 
         style={{ flex: 1 }} 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.profileSection}>
             <Image
               source={require("../../assets/profileIcon.png")}
@@ -143,8 +146,9 @@ export default function PaymentInfo() {
               <MaterialIcons name="chevron-right" size={24} color="#fff" />
             </TouchableOpacity>
           </View>
+          </KeyboardAvoidingView>
         </ScrollView>
-      </KeyboardAvoidingView>
+      
     </SafeAreaView>
   );
 }

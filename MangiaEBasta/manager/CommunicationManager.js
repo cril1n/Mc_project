@@ -21,8 +21,15 @@ export default class CommunicationController {
         const status = httpResponse.status;
         if (status >= 200 && status <= 299) {
             console.log('Request ' + verb + ' completed');
-            let deserializedObject = await httpResponse.json();
-            return deserializedObject;
+
+            // Verifica se c'è un corpo nella risposta
+            if (status !== 204) {
+                let deserializedObject = await httpResponse.json();
+                return deserializedObject;
+            } else {
+                // Nessun contenuto nella risposta (es. 204)
+                return null;
+            }
         } else {
             console.log(httpResponse);
             const message = await httpResponse.text();
@@ -53,7 +60,6 @@ export default class CommunicationController {
     }
 
     static async modifyUser(userData) {
-
         console.log("userdata (Dentro modifyuser):", userData);
         this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
         console.log("userData.uid (dentro modifyUser):", userData.uid);
@@ -70,8 +76,7 @@ export default class CommunicationController {
             return await this.genericRequest(id, verb, queryParams, bodyParams);
         }catch(error){
             console.log("ERRORE IN MODIFYUSER:", error);
-        }
-        
+        }  
     }
 
     static async getMenu(userLat, userLng, userSid, mid) {
