@@ -15,6 +15,7 @@ export default function PaymentInfo() {
 
   const handleSave = async () => {
     const savedSid = await ViewModel.getSid();
+    const savedUid = await ViewModel.getUid();
     const updatedUser = {
       ...user,
       cardNumber,
@@ -23,6 +24,7 @@ export default function PaymentInfo() {
       cardCVV,
       cardFullName,
       sid: savedSid,
+      uid: savedUid,
     };
     const error = (cardNumber && ViewModel.validateCardField('cardNumber', cardNumber)) ||
                   (cardExpireMonth && ViewModel.validateCardField('cardExpireMonth', cardExpireMonth)) ||

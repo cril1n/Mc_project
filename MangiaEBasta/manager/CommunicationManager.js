@@ -16,6 +16,7 @@ export default class CommunicationController {
         if (verb != 'GET') {
             fatchData.body = JSON.stringify(bodyParams);
         }
+        console.log("url:", url);
         let httpResponse = await fetch(url, fatchData);
 
         const status = httpResponse.status;

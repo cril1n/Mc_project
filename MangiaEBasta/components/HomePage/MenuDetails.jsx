@@ -7,7 +7,7 @@ import ViewModel from '../../viewModel/ViewModel';
 export default function MenuDetails({ route, navigation }) {
     const { menu } = route.params;
     const { location } = useLocation();
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const [base64WithPrefix, setImage] = useState(null);
     const [menuComplete, setMenu] = useState(null);
 
@@ -42,7 +42,7 @@ export default function MenuDetails({ route, navigation }) {
             if (user.lastOid != null) {
                 let lastOrderInfo = await ViewModel.getLastOrderInfo(user.lastOid)
                 if (lastOrderInfo.status == 'COMPLETED') {
-                    let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude);
+                    let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude, user, setUser);
                     console.log(orderInfo);
                     if (orderInfo) {
                         console.log(user);
@@ -63,10 +63,9 @@ export default function MenuDetails({ route, navigation }) {
                 }
 
             } else if (user.lastOid == null) {
-                let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude);
+                let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude, user, setUser);
                 console.log("Order info:", orderInfo);
                 if (orderInfo) {
-                    console.log(user);
                     Alert.alert(
                         "Ordine Confermato",
                         "Il tuo ordine è stato confermato con successo.",

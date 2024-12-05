@@ -137,6 +137,17 @@ export default class ViewModel {
             console.log(error);
         }
     }
+
+    //USERID
+    static async getUid() {
+        try {
+            let uid = await AsyncStorage.getItem("uid");
+            return uid;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     //USER
     static async getUser() {
         try {
@@ -153,7 +164,7 @@ export default class ViewModel {
             console.log(error);
         }
     }
-    static async deleteAccount(){
+    static async deleteAccount() {
         try {
             await AsyncStorage.removeItem("user");
             await AsyncStorage.removeItem("sid");
@@ -164,7 +175,7 @@ export default class ViewModel {
             console.log(error);
         }
     }
-    
+
     //MENU AND IMAGES
 
     static async getMenuComplete(lat, lng, mid) {
@@ -229,33 +240,35 @@ export default class ViewModel {
             console.log("Getting last order info...");
             return await CommunicationController.getOrderInfo(oid, this.sid);
         } catch (error) {
-            console.log(error);
+            console.log("Errore in getLatORderInfo:", error);
         }
     }
 
-    static async sendOrder(mid, lat, lng) {
+    static async sendOrder(mid, lat, lng, user, setUser) {
         try {
             console.log("Sending order...");
             let response = await CommunicationController.sendOrder(mid, lat, lng, this.sid);
             console.log("Order sent");
             console.log("Updating user after order...");
-            await this.updateUserAfterOrder();
+            await this.updateUserAfterOrder(user, setUser, response.oid);
+            console.log("User updated");
             return response;
         } catch (error) {
             console.log(error);
         }
     }
 
-    static async updateUserAfterOrder() {
-        const { setUser } = useUser();
+    static async updateUserAfterOrder(user, setUser, newOid) {
 
         try {
-            let user = await CommunicationController.fetchUser(this.uid, this.sid);
+            console.log("new oid:", newOid);
+            user.lastOid = newOid;
             setUser(user);
             await AsyncStorage.setItem("user", JSON.stringify(user));
         } catch (error) {
             console.log(error);
         }
+
     }
 
 
@@ -264,7 +277,7 @@ export default class ViewModel {
 
     static validateCardField(field, value) {
         let error = null;
-    
+
         switch (field) {
             case "cardFullName":
                 // Controllo: deve essere una stringa con solo caratteri e un solo spazio
@@ -272,44 +285,44 @@ export default class ViewModel {
                     error = "The card full name must be a valid string with only letters and a single space.";
                 }
                 break;
-    
+
             case "cardNumber":
                 // Controllo: deve essere una stringa di 16 cifre
                 if (!/^\d{16}$/.test(value)) {
                     error = "The card number must be exactly 16 digits.";
                 }
                 break;
-    
+
             case "cardExpireMonth":
                 // Controllo: deve essere un valore compreso tra "01" e "12"
                 if (!/^(0[1-9]|1[0-2])$/.test(value)) {
                     error = "The expiration month must be a valid 2-digit number (01-12).";
                 }
                 break;
-    
+
             case "cardExpireYear":
                 // Controllo: deve essere una stringa di 2 cifre
                 if (!/^\d{2}$/.test(value)) {
                     error = "The expiration year must be a valid 2-digit number.";
                 }
                 break;
-    
+
             case "cardCVV":
                 // Controllo: deve essere una stringa di 3 cifre
                 if (!/^\d{3}$/.test(value)) {
                     error = "The CVV must be exactly 3 digits.";
                 }
                 break;
-    
+
             default:
                 // Per campi non previsti
                 error = "Invalid field.";
         }
-    
+
         return error;
     }
-    static restartApp(){
+    static restartApp() {
         RNRestart.Restart();
-      };
+    };
 }
 

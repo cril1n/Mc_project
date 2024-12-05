@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import ViewModel from '../viewModel/ViewModel';
 import { useFocusEffect } from '@react-navigation/native';
+import { useUser } from '../model/UserContext';
 
 export default function OrderTrack() {
 
+    const { user } = useUser();
     const [order, setOrder] = useState(null);
 
 
@@ -14,7 +16,8 @@ export default function OrderTrack() {
 
             const fetchOrder = async () => {
                 try {
-                    const orderInfo = await ViewModel.getLastOrderInfo();
+                    const orderInfo = await ViewModel.getLastOrderInfo(user.lastOid);
+                    console.log("Last order info in Order track:", orderInfo);
                     if (isActive) {
                         if (!orderInfo || orderInfo.status === 'COMPLETED') {
                             setOrder(null);
@@ -33,7 +36,7 @@ export default function OrderTrack() {
             return () => {
                 isActive = false;
             };
-        }, [])
+        }, [user])
     );
 
     if (order == null) {
