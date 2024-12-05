@@ -69,7 +69,7 @@ export default class CommunicationController {
     static async modifyUser(userData) {
         console.log("userdata (Dentro modifyuser):", userData);
         this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
-        console.log("userData.uid (dentro modifyUser):", userData.uid);
+        //console.log("userData.uid (dentro modifyUser):", userData.uid);
         const id = parseInt(userData.uid);
         const keysToRemove = ['uid', 'orderStatus', 'lastOid']; // Sostituisci con le chiavi che vuoi rimuovere
         keysToRemove.forEach((key) => {

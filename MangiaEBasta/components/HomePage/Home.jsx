@@ -8,6 +8,7 @@ import MenuList from './MenuList';
 import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
 import MenuCard from './MenuCard';
+import OrderCheckOut from './OrderCheckOut';
 import { useLocation } from '../../model/LocationContext';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
@@ -71,6 +72,7 @@ export default function Home({navigation}) {
       </Stack.Screen>
       <Stack.Screen name="Menu Card" component={MenuCard} />
       <Stack.Screen name="Menu Details" component={MenuDetails} />
+      <Stack.Screen name="Order Check Out" component={OrderCheckOut} />
     </Stack.Navigator>
   );
 }

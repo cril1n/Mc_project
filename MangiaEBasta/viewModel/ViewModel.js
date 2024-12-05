@@ -3,8 +3,7 @@ import CommunicationController from '../manager/CommunicationManager';
 import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
 import RNRestart from 'react-native-restart';
-import { useUser, setUser } from '../model/UserContext';
-import { last } from 'lodash';
+import * as Location from 'expo-location';
 
 
 export default class ViewModel {
@@ -347,5 +346,12 @@ export default class ViewModel {
     static restartApp() {
         RNRestart.Restart();
     };
+    //ADDRESS
+    static async getAddress() {
+        const location = await this.getCurrentPosition();
+        console.log("location in getAddress:", location);
+        const address = await Location.reverseGeocodeAsync({latitude: location.coords.latitude, longitude: location.coords.longitude});
+        return address[0];
+      }
 }
 

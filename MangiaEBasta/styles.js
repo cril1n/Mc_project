@@ -33,6 +33,8 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
   backButton: {
     marginRight: 16,
@@ -116,11 +118,67 @@ export const styles = StyleSheet.create({
       width: '40%', // Shortened width
   },
   submitButton: {
-      padding: 50, // Increased button size
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFA500', // Colore arancione
+    padding: 16,
+    borderRadius: 25,
+    marginTop: 20,
+    width: '50%', // Larghezza del bottone
+  },
+  submitButtonText: {
+    color: '#fff', // Colore del testo
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  submitButtonText: {
+    color: '#fff', // Colore del testo
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#fff", // Colore chiaro per lo sfondo
+  },
+  title: {
+    fontSize: 28, // Titolo più grande
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16, // Sottotitolo informativo
+    color: '#666',
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd', // Colore chiaro per i bordi
+    backgroundColor: '#fff',
+    borderRadius: 10, // Angoli arrotondati
+    padding: 12,
+    marginBottom: 15,
+    width: '80%', // Maggiore larghezza
+    fontSize: 16,
+    color: '#333', // Testo scuro
+  },
+  submitButton: {
+    backgroundColor: '#FFA500', // Arancione brillante
+    paddingVertical: 14,
+    paddingHorizontal: 25,
+    borderRadius: 25, // Angoli arrotondati
+    width: '50%', // Larghezza del bottone
+    alignItems: 'center',
+    marginTop: 10,
   },
   successText: {
-      color: 'green',
-      marginTop: 10,
-      fontSize: 17,
+    color: 'green', // Testo verde per il successo
+    marginTop: 15,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

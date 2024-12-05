@@ -18,93 +18,7 @@ export default function MenuDetails({ route, navigation }) {
             .catch((error) => { console.log(error); });
     }, []);
 
-    const sendOrder = async (mid) => {
-        try {
-            let validUser = await ViewModel.checkUserInfoBeforeOrder(user);
-
-            if (!validUser) {
-                Alert.alert(
-                    "Profilo Mancante",
-                    "Per effettuare un ordine, per favore completa il tuo profilo.\nControlla anche di aver inserito i dati di pagamento.",
-                
-                    [
-                        {
-                            text: "OK",
-                            onPress: () => navigation.jumpTo('Profile'),
-                            style: "default"
-                        }
-                    ],
-                    { cancelable: false }
-                );
-                return;
-            }
-
-            console.log("User before last order check:", user);
-            if (user.lastOid != null) {
-                let lastOrderInfo = await ViewModel.getLastOrderInfo(user.lastOid)
-                if (lastOrderInfo.status == 'COMPLETED') {
-                    let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude, user, setUser);
-                    console.log(orderInfo);
-                    if (orderInfo) {
-                        console.log(user);
-                        Alert.alert(
-                            "Ordine Confermato",
-                            "Il tuo ordine è stato confermato con successo.",
-                            [
-                                {
-                                    text: "OK",
-                                    onPress: () => navigation.navigate('OrderTrack'),
-                                    style: "default"
-                                }
-                            ],
-                            { cancelable: false }
-                        );
-                    }
-                    return;
-                }
-
-            } else if (user.lastOid == null) {
-                let orderInfo = await ViewModel.sendOrder(mid, location.coords.latitude, location.coords.longitude, user, setUser);
-                console.log("Order info:", orderInfo);
-                if (orderInfo) {
-                    Alert.alert(
-                        "Ordine Confermato",
-                        "Il tuo ordine è stato confermato con successo.",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => navigation.navigate('OrderTrack'),
-                                style: "default"
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }
-                return;
-            }
-
-            Alert.alert(
-                "Ordine in Corso",
-                "Hai già un ordine in corso. Non puoi effettuarne un altro finché non viene consegnato.",
-                [
-                    {
-                        text: "OK",
-                        style: "default"
-                    },
-                    {
-                        text: "Segui il tuo ordine",
-                        onPress: () => navigation.navigate('OrderTrack'),
-                        style: "default"
-                    }
-                ],
-                { cancelable: false }
-            )
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    
 
     if (menuComplete == null) {
         return (
@@ -128,8 +42,10 @@ export default function MenuDetails({ route, navigation }) {
             <Text style={styles.deliveryTime}>Delivery Time: {menuComplete.deliveryTime} minutes</Text>
             {/* Aggiungi ulteriori dettagli del menu qui */}
             <Button
-                title="Place Order"
-                onPress={() => sendOrder(menuComplete.mid)}
+                title="ORDINA"
+                onPress={() => {
+                    navigation.navigate('Order Check Out', {mid: menuComplete.mid});
+                }}
             />
         </View>
     );
