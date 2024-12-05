@@ -10,11 +10,26 @@ import ViewModel from '../../viewModel/ViewModel';
 import { View, Text } from 'react-native';
 import { useUser } from '../../model/UserContext';
 import _ from 'lodash';
+import { useFocusEffect } from '@react-navigation/native';
+
+
 const Stack = createStackNavigator();
 
 export default function Profile() {
 
   const {user, setUser} = useUser();
+
+  async function setLastScreen(screen) {
+    try {
+        await ViewModel.setLastScreen(screen);
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+    setLastScreen('Profile')}));
 
   const checkProfile = async () => {
     console.log('Profile page');

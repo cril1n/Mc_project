@@ -4,6 +4,7 @@ import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
 import RNRestart from 'react-native-restart';
 import { useUser, setUser } from '../model/UserContext';
+import { last } from 'lodash';
 
 
 export default class ViewModel {
@@ -42,11 +43,17 @@ export default class ViewModel {
         console.log("Checking if first run");
         let sid = null;
         let uid = null;
+        let lastScreen = null;
         try {
             sid = await AsyncStorage.getItem("sid");
             uid = await AsyncStorage.getItem("uid");
+            lastScreen = await AsyncStorage.getItem("lastScreen");
+            console.log("lastScreen:", lastScreen);
         } catch (error) {
             console.log(error);
+        }
+        if (lastScreen == null) {
+            await AsyncStorage.setItem("lastScreen", "Homepage"); 
         }
         // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nell'AsyncStorage
         if (sid && uid) {
@@ -110,6 +117,24 @@ export default class ViewModel {
     static async getCurrentPosition() {
         try {
             return await this.psManager.getCurrentPosition();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // Funzione per recupare l'ultima schermata visitata dall'utente
+    static async getLastScreen() {
+        try {
+            let lastScreen = await AsyncStorage.getItem("lastScreen");
+            return lastScreen;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async setLastScreen(screen) {
+        try {
+            await AsyncStorage.setItem("lastScreen", screen);
         } catch (error) {
             console.log(error);
         }

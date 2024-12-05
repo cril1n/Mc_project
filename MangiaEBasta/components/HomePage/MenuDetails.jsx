@@ -25,7 +25,8 @@ export default function MenuDetails({ route, navigation }) {
             if (!validUser) {
                 Alert.alert(
                     "Profilo Mancante",
-                    "Per effettuare un ordine, per favore completa il tuo profilo.",
+                    "Per effettuare un ordine, per favore completa il tuo profilo.\nControlla anche di aver inserito i dati di pagamento.",
+                
                     [
                         {
                             text: "OK",
