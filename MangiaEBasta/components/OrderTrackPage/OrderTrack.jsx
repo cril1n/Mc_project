@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import ViewModel from '../viewModel/ViewModel';
+import ViewModel from '../../viewModel/ViewModel';
 import { useFocusEffect } from '@react-navigation/native';
-import { useUser } from '../model/UserContext';
+import { useUser } from '../../model/UserContext';
 
 export default function OrderTrack() {
 

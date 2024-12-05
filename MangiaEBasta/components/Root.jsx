@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import ViewModel from "../viewModel/ViewModel";
 import Home from "./HomePage/Home";
-import OrderTrack from "./OrderTrack";
+import OrderTrack from "./OrderTrackPage/OrderTrack";
 import Profile from "./ProfilePage/Profile";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LocationProvider } from "../model/LocationContext"; // Importa il contesto
