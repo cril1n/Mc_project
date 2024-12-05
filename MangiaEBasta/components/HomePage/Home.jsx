@@ -4,15 +4,12 @@ import { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import ViewModel from '../../viewModel/ViewModel';
 import { styles } from '../../styles';
-
-
 import MenuList from './MenuList';
 import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
 import MenuCard from './MenuCard';
-
 import { useLocation } from '../../model/LocationContext';
-import OrderTrack from '../OrderTrack';
+import OrderCheckOut from './OrderCheckOut';
 
 const Stack = createStackNavigator();
 const MenuTab = createMaterialTopTabNavigator();
@@ -59,7 +56,7 @@ export default function Home({navigation}) {
         {props => <MenuTabScreen {...props} location={location} menuList={menuList} />}
       </Stack.Screen>
       <Stack.Screen name="Menu Card" component={MenuCard} />
-      <Stack.Screen name="Menu Details" component={MenuDetails} navigation={navigation} />
+      <Stack.Screen name="Menu Details" component={MenuDetails} />
     </Stack.Navigator>
   );
 }

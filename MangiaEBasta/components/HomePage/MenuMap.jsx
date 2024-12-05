@@ -5,7 +5,7 @@ import { styles } from '../../styles';
 import MenuMarker from './MenuMarker';
 import MapView from 'react-native-maps';
 
-export default function MenuMap({ route }) {
+export default function MenuMap({ route, navigation }) {
 
 
     const { location, menuList } = route.params;
@@ -33,7 +33,7 @@ export default function MenuMap({ route }) {
                 loadingEnabled={true}
                 region={region}
             >
-                {menuList.map((menu) => (<MenuMarker key={menu.mid} menu={menu} />))}
+                {menuList.map((menu) => (<MenuMarker key={menu.mid} menu={menu} navigation={navigation} />))}
 
             </MapView>
         </View>

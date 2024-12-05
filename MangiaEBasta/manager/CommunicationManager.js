@@ -16,6 +16,7 @@ export default class CommunicationController {
         if (verb != 'GET') {
             fatchData.body = JSON.stringify(bodyParams);
         }
+        console.log("url:", url);
         let httpResponse = await fetch(url, fatchData);
 
         const status = httpResponse.status;
@@ -51,7 +52,7 @@ export default class CommunicationController {
     static async fetchUser(userId, userSid) {
         this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/user/';
 
-        console.log("fetching user with id: " + userId);
+        console.log("fetching user with id: " + userId + " and sid: " + userSid);
         const id = userId;
         const verb = 'GET';
         const queryParams = { sid: userSid };
@@ -108,4 +109,28 @@ export default class CommunicationController {
         const bodyParams = {};
         return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
     }
+
+    static async sendOrder(mid, userLat, userLng, userSid) {
+        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/menu/';
+
+        deliveryLoc = { lat: userLat, lng: userLng };
+
+        const endPoint = mid + '/buy';
+        const verb = 'POST';
+        const queryParams = {};
+        const bodyParams = { sid: userSid, deliveryLocation: deliveryLoc };
+        return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
+    }
+
+    static async getOrderInfo(oid, userSid) {
+        this.BASE_URL = 'https://develop.ewlab.di.unimi.it/mc/2425/order/';
+
+        const endPoint = oid;
+        const verb = 'GET';
+        const queryParams = { sid: userSid };
+        const bodyParams = {};
+        return await this.genericRequest(endPoint, verb, queryParams, bodyParams);
+    }
+
+   
 }

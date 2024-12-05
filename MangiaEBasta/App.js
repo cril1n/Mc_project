@@ -5,7 +5,8 @@ import Root from './components/Root';
 
 export default function App() {
 
-  const [isFirstRun, setIsFirstRun] = useState(true);
+  const [initialized, setInitialized] = useState(false);
+  const [isFirstRun, setIsFirstRun] = useState(null);
   const [locationPermitted, setLocationPermitted] = useState(false);
   const [locRequestCounter, setLocRequestCounter] = useState(0);
 
@@ -15,6 +16,7 @@ export default function App() {
       await ViewModel.initDB();
       let flag = await ViewModel.checkFirstRun();
       setIsFirstRun(flag);
+      setInitialized(true);
       if (!flag) {
         console.log("initializing position");
         await setLocationPermitted(await ViewModel.initPosition())
@@ -29,6 +31,13 @@ export default function App() {
     initApp();
   }, []);
 
+  if (!initialized) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Initializing...</Text>
+      </View>
+    )
+  }
 
   if (isFirstRun) {
     return (

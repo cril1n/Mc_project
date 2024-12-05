@@ -3,11 +3,22 @@ import CommunicationController from '../manager/CommunicationManager';
 import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
 import RNRestart from 'react-native-restart';
+import { useUser, setUser } from '../model/UserContext';
 
 
 export default class ViewModel {
 
+    // static user = null;
+    // static setUser = null;
+
+    // static initializeUser() {
+    //     const { user, setUser } = useUser();
+    //     this.user = user;
+    //     this.setUser = setUser;
+    // }
+
     static sid = null;
+    static uid = null;
 
     static psManager = null;
     static stManager = null;
@@ -39,9 +50,11 @@ export default class ViewModel {
         }
         // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nell'AsyncStorage
         if (sid && uid) {
+            console.log(sid, uid);
             this.sid = sid;
+            this.uid = uid;
             let user = JSON.parse(await AsyncStorage.getItem("user"));
-            if(user.uid == uid){
+            if (user.uid == uid) {
                 console.log("Not first run, sid, uid and user already in AsyncStorage");
                 return false;
             } else {
@@ -124,15 +137,27 @@ export default class ViewModel {
             console.log(error);
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2f137d873d8db72162f839c4f4d81b9d27eaf137
     //USERID
     static async getUid() {
         try {
             let uid = await AsyncStorage.getItem("uid");
+<<<<<<< HEAD
             return JSON.parse(uid);
+=======
+            return uid;
+>>>>>>> 2f137d873d8db72162f839c4f4d81b9d27eaf137
         } catch (error) {
             console.log(error);
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2f137d873d8db72162f839c4f4d81b9d27eaf137
     //USER
     static async getUser() {
         try {
@@ -149,7 +174,7 @@ export default class ViewModel {
             console.log(error);
         }
     }
-    static async deleteAccount(){
+    static async deleteAccount() {
         try {
             await AsyncStorage.removeItem("user");
             await AsyncStorage.removeItem("sid");
@@ -160,11 +185,22 @@ export default class ViewModel {
             console.log(error);
         }
     }
-    
+
     //MENU AND IMAGES
+
+    static async getMenuComplete(lat, lng, mid) {
+        try {
+            let menu = await CommunicationController.getMenu(lat, lng, this.sid, mid);
+            return menu;
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
     static async getMenuWithImage(menu) {
         try {
-           
+
             let imageVersion = menu.imageVersion;
             let DBImageVersion = await this.stManager.getMenuImageVersionDB(menu.mid);
 
@@ -189,22 +225,69 @@ export default class ViewModel {
             let menuList = await CommunicationController.getNearMenus(lat, lng, this.sid);
             menuList = menuList.filter(menu => menu.name !== 'string');
             menuList = menuList.sort((a, b) => a.deliveryTime - b.deliveryTime)
-      
+
             for (let i = 0; i < menuList.length; i++) {
                 menuList[i] = await this.getMenuWithImage(menuList[i]);
             }
-            
+
             return menuList;
         } catch (error) {
             console.log(error);
-        }  
+        }
     }
+
+    //ORDER
+
+    static async checkUserInfoBeforeOrder(user) {
+        if (!user.firstName || !user.lastName || !user.cardFullName || !user.cardNumber || !user.cardCVV || !user.cardExpireMonth || !user.cardExpireYear) {
+            return false;
+        }
+        return true;
+    }
+
+    static async getLastOrderInfo(oid) {
+        try {
+            console.log("Getting last order info...");
+            return await CommunicationController.getOrderInfo(oid, this.sid);
+        } catch (error) {
+            console.log("Errore in getLatORderInfo:", error);
+        }
+    }
+
+    static async sendOrder(mid, lat, lng, user, setUser) {
+        try {
+            console.log("Sending order...");
+            let response = await CommunicationController.sendOrder(mid, lat, lng, this.sid);
+            console.log("Order sent");
+            console.log("Updating user after order...");
+            await this.updateUserAfterOrder(user, setUser, response.oid);
+            console.log("User updated");
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async updateUserAfterOrder(user, setUser, newOid) {
+
+        try {
+            console.log("new oid:", newOid);
+            user.lastOid = newOid;
+            setUser(user);
+            await AsyncStorage.setItem("user", JSON.stringify(user));
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+
 
     // CARD AND PAYMENT
 
     static validateCardField(field, value) {
         let error = null;
-    
+
         switch (field) {
             case "cardFullName":
                 // Controllo: deve essere una stringa con solo caratteri e un solo spazio
@@ -212,44 +295,44 @@ export default class ViewModel {
                     error = "The card full name must be a valid string with only letters and a single space.";
                 }
                 break;
-    
+
             case "cardNumber":
                 // Controllo: deve essere una stringa di 16 cifre
                 if (!/^\d{16}$/.test(value)) {
                     error = "The card number must be exactly 16 digits.";
                 }
                 break;
-    
+
             case "cardExpireMonth":
                 // Controllo: deve essere un valore compreso tra "01" e "12"
                 if (!/^(0[1-9]|1[0-2])$/.test(value)) {
                     error = "The expiration month must be a valid 2-digit number (01-12).";
                 }
                 break;
-    
+
             case "cardExpireYear":
                 // Controllo: deve essere una stringa di 2 cifre
                 if (!/^\d{2}$/.test(value)) {
                     error = "The expiration year must be a valid 2-digit number.";
                 }
                 break;
-    
+
             case "cardCVV":
                 // Controllo: deve essere una stringa di 3 cifre
                 if (!/^\d{3}$/.test(value)) {
                     error = "The CVV must be exactly 3 digits.";
                 }
                 break;
-    
+
             default:
                 // Per campi non previsti
                 error = "Invalid field.";
         }
-    
+
         return error;
     }
-    static restartApp(){
+    static restartApp() {
         RNRestart.Restart();
-      };
+    };
 }
 
