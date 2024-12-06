@@ -69,7 +69,7 @@ export default function App() {
         <Text style={styles.infoText}>
           To proceed, location permission is required. Please grant it by tapping the button below.
         </Text>
-        <TouchableOpacity style={styles.orangeButton} onPress={handleLocationPermission}>
+        <TouchableOpacity style={styles.button} onPress={handleLocationPermission}>
           <Text style={styles.buttonText}>Enable Location</Text>
         </TouchableOpacity>
       </View>
@@ -95,10 +95,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     padding: 15,
     alignItems: 'center',
-    borderRadius: 10
+    borderRadius: 10,
+    elevation: 3,
   },
   buttonText: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'white',
     fontWeight: 'bold'
   },
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     alignItems: 'center',
     borderRadius: 10,
+    elevetion: 3,
   },
   buttonText: {
     fontSize: 18,
