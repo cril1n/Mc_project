@@ -50,33 +50,36 @@ export default function App() {
   }
 
   if (!isFirstRun) {
+    const handleLocationPermission = async () => {
+      const permissionGranted = await ViewModel.initPosition();
+      setLocationPermitted(permissionGranted);
+      setLocRequestCounter((prev) => prev + 1);
+    };
+  
+    const renderLocationDeniedMessage = () => (
+      <View style={styles.centeredContainer}>
+        <Text style={styles.errorText}>
+          Location permission refused. Please enable location permission from the device settings or reinstall the app.
+        </Text>
+      </View>
+    );
+  
+    const renderRequestLocationPermission = () => (
+      <View style={styles.centeredContainer}>
+        <Text style={styles.infoText}>
+          To proceed, location permission is required. Please grant it by tapping the button below.
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={handleLocationPermission}>
+          <Text style={styles.buttonText}>Enable Location</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  
     if (!locationPermitted) {
-      if (locRequestCounter > 1) {
-        return (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Location permission refused. Please set the location permission from the device settings. Or re install the app.</Text>
-          </View>
-        )
-      }
-
-      return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Please accept location permission</Text>
-          <Button title="Location permission" onPress={
-            async () => {
-              setLocationPermitted(await ViewModel.initPosition())
-              setLocRequestCounter(locRequestCounter + 1)
-            }}
-          />
-        </View>
-      )
+      return locRequestCounter > 1 ? renderLocationDeniedMessage() : renderRequestLocationPermission();
     }
-
-    if (locationPermitted) {
-      return (
-        <Root />
-      )
-    }
+  
+    return <Root />;
   }
 }
 const styles = StyleSheet.create({
@@ -92,12 +95,45 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     padding: 15,
     alignItems: 'center',
-    borderRadius: 10
+    borderRadius: 10,
+    elevation: 3,
   },
   buttonText: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'white',
     fontWeight: 'bold'
-  }
+  },
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  orangeButton: {
+    marginTop: 20,
+    width: '80%',
+    backgroundColor: 'orange',
+    paddingVertical: 15,
+    alignItems: 'center',
+    borderRadius: 10,
+    elevetion: 3,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
 });
 

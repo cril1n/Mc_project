@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunicationController from '../manager/CommunicationManager';
 import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
-
+import * as Location from 'expo-location';
 
 
 export default class ViewModel {
@@ -69,6 +69,7 @@ export default class ViewModel {
             console.log("first run");
             // Creo il nuovo utente nel server
             let response = null;
+            await AsyncStorage.setItem("lastScreen", "Homepage");
             try {
                 response = await CommunicationController.getNewUser();
             } catch (error) {
@@ -151,17 +152,15 @@ export default class ViewModel {
             console.log(error);
         }
     }
-
     //USERID
     static async getUid() {
         try {
             let uid = await AsyncStorage.getItem("uid");
-            return uid;
+            return JSON.parse(uid);
         } catch (error) {
             console.log(error);
         }
     }
-
     //USER
     static async getUser() {
         try {
@@ -184,7 +183,6 @@ export default class ViewModel {
             await AsyncStorage.removeItem("sid");
             await AsyncStorage.removeItem("uid");
             console.log("Account deleted");
-            this.restartApp();
         } catch (error) {
             console.log(error);
         }
@@ -295,7 +293,29 @@ export default class ViewModel {
     }
 
 
+    //PROFILE INFO
 
+    static validateProfileInfoField(field, value) {
+        let error = null;
+        switch (field)  {
+            case "firstName":
+                // Controllo: deve essere una stringa con solo caratteri e che non sia vuota
+                if(!/^[a-zA-Z]+$/.test(value)|| value == "" ) {
+                    error = "The first name must be a valid string with only letters.";
+                }
+                break;
+            case "lastName":
+                // Controllo: deve essere una stringa con solo caratteri e che non sia vuota
+                if(!/^[a-zA-Z]+$/.test(value) || value == "") {
+                    error = "The last name must be a valid string with only letters.";
+                }
+                break;
+            default:
+                // Per campi non previsti
+                error = "Invalid field.";
+        }
+        return error;
+    }
     // CARD AND PAYMENT
 
     static validateCardField(field, value) {
@@ -344,6 +364,12 @@ export default class ViewModel {
 
         return error;
     }
-
+    //ADDRESS
+    static async getAddress() {
+        const location = await this.getCurrentPosition();
+        console.log("location in getAddress:", location);
+        const address = await Location.reverseGeocodeAsync({latitude: location.coords.latitude, longitude: location.coords.longitude});
+        return address[0];
+      }
 }
 

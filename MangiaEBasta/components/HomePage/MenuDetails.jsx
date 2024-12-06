@@ -149,8 +149,10 @@ export default function MenuDetails({ route, navigation }) {
             <Text style={styles.deliveryTime}>Delivery Time: {menuComplete.deliveryTime} minutes</Text>
             {/* Aggiungi ulteriori dettagli del menu qui */}
             <Button
-                title="Place Order"
-                onPress={() => sendOrder(menuComplete.mid)}
+                title="ORDINA"
+                onPress={() => {
+                    navigation.navigate('Order Check Out', {mid: menuComplete.mid});
+                }}
             />
         </View>
     );

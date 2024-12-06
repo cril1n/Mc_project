@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, StyleSheet, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useUser } from '../../model/UserContext';
 import ViewModel from '../../viewModel/ViewModel';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import CommunicationController from '../../manager/CommunicationManager';
+
 export default function ProfileInfo() {
   const { user, setUser } = useUser();
   const [isEditing, setIsEditing] = useState(false);
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
+  const [firstName, setFirstName] = useState(user.firstName || '');
+  const [lastName, setLastName] = useState(user.lastName || '');
   const [updatedUser, setUpdatedUser] = useState(user);
 
   const handleSave = async () => {
-    const savedSid = await ViewModel.getSid();;
-    const updatedUser = {
-                ...user,
-                firstName: firstName,
-                lastName: lastName,
-                sid: savedSid,
-            };
+      const savedSid = await ViewModel.getSid();;
+      const savedUid = await ViewModel.getUid();
+      const updatedUser = {
+                  ...user,
+                  firstName: firstName,
+                  lastName: lastName,
+                  sid: savedSid,
+                  uid: savedUid,
+              };
+
+      const error = (firstName && ViewModel.validateProfileInfoField('firstName', firstName)) ||
+              (lastName && ViewModel.validateProfileInfoField('lastName', lastName))
+    if (error) {
+    console.log(error);
+    Alert.alert('Error', error);
+    return;
+    }
     setUser(updatedUser);
     setIsEditing(false);
     // Qui dovresti aggiungere la logica per salvare i dati sul server
