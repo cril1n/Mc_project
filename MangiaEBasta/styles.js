@@ -11,6 +11,11 @@ export const styles = StyleSheet.create({
     flex:1,
     backgroundColor: '#fff',
   },
+  trackingInfoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   profileSection: {
     alignItems: 'center',
     marginVertical: 20,
@@ -43,6 +48,9 @@ export const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  trackingMap: {
+    flex: 1,
   },
   profileImage: {
     width: 100,

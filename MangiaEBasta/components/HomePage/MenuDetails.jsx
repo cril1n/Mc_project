@@ -52,7 +52,7 @@ export default function MenuDetails({ route, navigation }) {
                             "Il tuo ordine è stato confermato con successo.",
                             [
                                 {
-                                    text: "OK",
+                                    text: "Segui il tuo ordine",
                                     onPress: () => navigation.navigate('OrderTrack'),
                                     style: "default"
                                 }
@@ -72,7 +72,7 @@ export default function MenuDetails({ route, navigation }) {
                         "Il tuo ordine è stato confermato con successo.",
                         [
                             {
-                                text: "OK",
+                                text: "Segui il tuo ordine",
                                 onPress: () => navigation.navigate('OrderTrack'),
                                 style: "default"
                             }
