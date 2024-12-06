@@ -7,8 +7,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  containerNavigator:{
-    flex:1,
+  orderContainer: {
+    flex: 1,
+    padding: 20,
+  },
+  containerNavigator: {
+    flex: 1,
     backgroundColor: '#fff',
   },
   trackingInfoContainer: {
@@ -49,8 +53,22 @@ export const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  trackingMap: {
-    flex: 1,
+  infoContainer: {
+    flex: 1, // Occupa 1/3 dello spazio verticale
+    backgroundColor: '#ffffff', // Colore di sfondo del componente info
+    borderRadius: 10, // Bordi smussati
+    padding: 15, // Padding interno
+    marginBottom: 10, // Spazio sotto il componente
+    // Aggiungi elevazione per Android
+    elevation: 3,
+  },
+  mapContainer: {
+    flex: 2, // Occupa 2/3 dello spazio verticale
+    backgroundColor: '#ffffff', // Colore di sfondo del componente mappa
+    borderRadius: 10, // Bordi smussati
+    padding: 15, // Padding interno (opzionale, se desideri)
+    // Aggiungi elevazione per Android
+    elevation: 3,
   },
   profileImage: {
     width: 100,
@@ -62,7 +80,7 @@ export const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 12,
-    margin:8,
+    margin: 8,
   },
   menuContainer: {
     backgroundColor: "#F8F9FA",
@@ -116,19 +134,19 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      marginTop: 10,
-      marginBottom: 20, // Increased margin between boxes
-      width: '40%', // Shortened width
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 20, // Increased margin between boxes
+    width: '40%', // Shortened width
   },
   submitButton: {
-      padding: 50, // Increased button size
+    padding: 50, // Increased button size
   },
   successText: {
-      color: 'green',
-      marginTop: 10,
-      fontSize: 17,
+    color: 'green',
+    marginTop: 10,
+    fontSize: 17,
   },
 });

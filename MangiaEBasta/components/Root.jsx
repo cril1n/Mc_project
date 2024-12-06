@@ -70,7 +70,20 @@ export default function Root() {
       <LocationProvider initialLocation={initialLocation}>
         <UserProvider initialUser={initialUser}>
           <NavigationContainer>
-            <Tab.Navigator initialRouteName= {lastScreen}>
+            <Tab.Navigator
+              initialRouteName= {'Homepage'}
+              screenOptions={{
+                tabBarStyle: {
+                  backgroundColor: '#f5ae3d', 
+                  height: 70,
+                  paddingBottom: 10, 
+                  paddingTop: 10, 
+                },
+                tabBarActiveTintColor: 'black',
+                tabBarInactiveTintColor: 'gray',
+              }}
+              
+            >
               <Tab.Screen
                 name="Homepage"
                 component={Home}

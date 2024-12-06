@@ -2,21 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommunicationController from '../manager/CommunicationManager';
 import StorageManager from '../manager/StorageManager';
 import PositionManager from '../manager/PositionManager';
-import RNRestart from 'react-native-restart';
-import { useUser, setUser } from '../model/UserContext';
-import { last } from 'lodash';
+
 
 
 export default class ViewModel {
-
-    // static user = null;
-    // static setUser = null;
-
-    // static initializeUser() {
-    //     const { user, setUser } = useUser();
-    //     this.user = user;
-    //     this.setUser = setUser;
-    // }
 
     static sid = null;
     static uid = null;
@@ -253,8 +242,17 @@ export default class ViewModel {
 
     //ORDER
 
+    static async checkUserCardBeforeOrder(user) {
+        if (!user.cardFullName || !user.cardNumber || !user.cardCVV || !user.cardExpireMonth || !user.cardExpireYear ||
+            user.cardFullName == "" || user.cardNumber == "" || user.cardCVV == "" || user.cardExpireMonth == "" || user.cardExpireYear  == ""
+        ) {
+            return false;
+        }
+        return true;
+    }
+
     static async checkUserInfoBeforeOrder(user) {
-        if (!user.firstName || !user.lastName || !user.cardFullName || !user.cardNumber || !user.cardCVV || !user.cardExpireMonth || !user.cardExpireYear) {
+        if (!user.firstName || !user.lastName || user.firstName == "" || user.lastName == "" ){
             return false;
         }
         return true;
@@ -346,8 +344,6 @@ export default class ViewModel {
 
         return error;
     }
-    static restartApp() {
-        RNRestart.Restart();
-    };
+
 }
 

@@ -20,17 +20,35 @@ export default function MenuDetails({ route, navigation }) {
 
     const sendOrder = async (mid) => {
         try {
-            let validUser = await ViewModel.checkUserInfoBeforeOrder(user);
+            let validUserInfo = await ViewModel.checkUserInfoBeforeOrder(user);
+            let validUserCard = await ViewModel.checkUserCardBeforeOrder(user);
 
-            if (!validUser) {
+            if (!validUserInfo) {
                 Alert.alert(
-                    "Profilo Mancante",
-                    "Per effettuare un ordine, per favore completa il tuo profilo.\nControlla anche di aver inserito i dati di pagamento.",
+                    "Data profile missing",
+                    "Per effettuare un ordine, per favore completa il tuo profilo.",
                 
                     [
                         {
                             text: "OK",
-                            onPress: () => navigation.jumpTo('Profile'),
+                            onPress: () => navigation.jumpTo('Profile', { screen: 'Profile Info' }),
+                            style: "default"
+                        }
+                    ],
+                    { cancelable: false }
+                );
+                return;
+            }
+
+            if (!validUserCard) {
+                Alert.alert(
+                    "Billing information missing",
+                    "Controlla di aver inserito i dati di pagamento.",
+                
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => navigation.jumpTo('Profile', { screen: 'Payment Info' }),
                             style: "default"
                         }
                     ],
@@ -49,11 +67,14 @@ export default function MenuDetails({ route, navigation }) {
                         console.log(user);
                         Alert.alert(
                             "Ordine Confermato",
-                            "Il tuo ordine è stato confermato con successo.",
+                            "Il tuo ordine è stato confermato.",
                             [
                                 {
                                     text: "Segui il tuo ordine",
-                                    onPress: () => navigation.navigate('OrderTrack'),
+                                    onPress: () => {
+                                        navigation.popTo;
+                                        navigation.navigate('OrderTrack', route = { params: { menu: menu } });
+                                    },
                                     style: "default"
                                 }
                             ],

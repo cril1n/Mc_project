@@ -20,7 +20,25 @@ const MenuTab = createMaterialTopTabNavigator();
 
 function MenuTabScreen({location, menuList}) {
   return (
-    <MenuTab.Navigator>
+    <MenuTab.Navigator
+    screenOptions={{
+      tabBarStyle: {
+        paddingBottom: 10,
+        paddingTop: 10,
+      },
+      tabBarActiveTintColor: 'black',
+      tabBarActiveBackgroundColor: 'black',
+      tabBarInactiveTintColor: 'gray',
+      tabBarIndicatorStyle: {
+        backgroundColor: '#f5ae3d', // Colore dell'indicatore della tab attiva
+        height: 3, // Altezza dell'indicatore
+      },
+      tabBarLabelStyle: {
+        fontSize: 14, // Dimensione del testo delle etichette
+        fontWeight: 'bold', // Peso del testo delle etichette
+      },
+    }}
+    >
       <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ menuList }} />
       <MenuTab.Screen name="Menu map" component={MenuMap} initialParams={{ location, menuList }} />
     </MenuTab.Navigator>
