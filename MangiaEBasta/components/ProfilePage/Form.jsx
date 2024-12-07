@@ -49,12 +49,12 @@ export default function Form({ checkProfile, navigation }) {
   return (
     <View style={[styles.container, { backgroundColor: "#F8F9FA" }]}>
       <Text style={[styles.formTitle, { color: "#333", textAlign: "center" }]}>
-        Prima Registrazione
+      First Registration
       </Text>
       <Text
         style={[styles.formSubtitle, { marginBottom: 20, textAlign: "center" }]}
       >
-        Compila i seguenti campi per iniziare
+        Fill in the following fields to get started
       </Text>
       <TextInput
         placeholder="First name"
@@ -78,7 +78,7 @@ export default function Form({ checkProfile, navigation }) {
       </TouchableOpacity>
       {isRegistered && (
         <Text style={styles.formSuccessText}>
-          Registrazione completata con successo!
+          Registration completed successfully!
         </Text>
       )}
     </View>

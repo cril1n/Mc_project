@@ -16,6 +16,7 @@ export default function MenuDetails({ route, navigation }) {
         ViewModel.getMenuComplete(location.coords.latitude, location.coords.longitude, menu.mid)
             .then((menuData) => { setMenu(menuData); })
             .catch((error) => { console.log(error); });
+        console.log("Menu in MenuDetails:", menuComplete);
     }, []);
 
    

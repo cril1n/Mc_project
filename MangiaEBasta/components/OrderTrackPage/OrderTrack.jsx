@@ -12,9 +12,10 @@ export default function OrderTrack({route}) {
     const [order, setOrder] = useState(null);
     const { user } = useUser();
     const onDelivery = useRef(false);
-    //const { menu } = route.params || " ";
-    //console.log("Menu in OrderTrack:", menu);
-
+    const { menu } = route.params || {};
+    const [menuOrdered, setMenuOrdered] = useState(menu);
+    console.log("Menu in OrderTrack:", menu);
+    console.log("Menu ordered in OrderTrack:", menuOrdered);
     async function setLastScreen(screen) {
         try {
             await ViewModel.setLastScreen(screen);
@@ -91,7 +92,7 @@ export default function OrderTrack({route}) {
     if (order == null) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Nessun ordine in corso</Text>
+                <Text>No orders in progress</Text>
             </View>
         )
     }
@@ -100,7 +101,7 @@ export default function OrderTrack({route}) {
         <View style={styles.orderContainer}>
 
             <View style={styles.infoContainer}>
-                <OrderTrackInfo orderInfo={order} menuInfo={menu}/>
+                {menu && <OrderTrackInfo orderInfo={order} menuInfo={menu}/> || menuOrdered && <OrderTrackInfo orderInfo={order} menuInfo={menuOrdered}/> }
             </View>
             <View style={styles.mapContainer}>
                 <OrderTrackMap orderInfo={order} onDelivery={onDelivery} />

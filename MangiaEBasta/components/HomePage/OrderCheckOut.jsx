@@ -13,10 +13,11 @@ import { useUser } from "../../model/UserContext";
 import { styles } from "../../styles";
 
 export default function OrderCheckOut({ route, navigation }) {
-  const { menu } = route.params;
+  const { menu } = route.params || {};
   const { user, setUser } = useUser();
   const { location } = useLocation();
   const [address, setAddress] = useState("");
+  console.log("Menu in OrderCheckOut:", menu);
 
   const setAddressPost = async () => {
     try {
@@ -43,7 +44,7 @@ export default function OrderCheckOut({ route, navigation }) {
       if (!validUserInfo) {
         Alert.alert(
           "Data profile missing",
-          "Per effettuare un ordine, per favore completa il tuo profilo.",
+          "To place an order, please complete your profile.",
 
           [
             {
@@ -60,7 +61,7 @@ export default function OrderCheckOut({ route, navigation }) {
       if (!validUserCard) {
         Alert.alert(
           "Billing information missing",
-          "Controlla di aver inserito i dati di pagamento.",
+          "Please make sure you have entered your payment details.",
 
           [
             {
@@ -83,14 +84,14 @@ export default function OrderCheckOut({ route, navigation }) {
           if (orderInfo) {
             console.log(user);
             Alert.alert(
-              "Ordine Confermato",
-              "Il tuo ordine è stato confermato.",
+              "Order Confirmed",
+              "Your order has been confirmed.",
               [
                 {
-                  text: "Segui il tuo ordine",
+                  text: "Follow your order",
                   onPress: () => {
                     navigation.popTo;
-                    navigation.navigate('OrderTrack', route = { params: { menu: menu } });
+                    navigation.navigate('OrderTrack', {menu: menu});
                   },
                   style: "default"
                 }
@@ -106,12 +107,12 @@ export default function OrderCheckOut({ route, navigation }) {
         console.log("Order info:", orderInfo);
         if (orderInfo) {
           Alert.alert(
-            "Ordine Confermato",
-            "Il tuo ordine è stato confermato con successo.",
+            "Order Confirmed",
+            "Your order has been successfully confirmed.",
             [
               {
-                text: "Segui il tuo ordine",
-                onPress: () => navigation.navigate('OrderTrack'),
+                text: "Follow your order",
+                onPress: () => navigation.navigate('OrderTrack', {menu: menu}),
                 style: "default"
               }
             ],
@@ -122,15 +123,15 @@ export default function OrderCheckOut({ route, navigation }) {
       }
 
       Alert.alert(
-        "Ordine in Corso",
-        "Hai già un ordine in corso. Non puoi effettuarne un altro finché non viene consegnato.",
+        "Order in progress",
+        "You already have an order in progress. You cannot place another order until it is delivered.",
         [
           {
             text: "OK",
             style: "default"
           },
           {
-            text: "Segui il tuo ordine",
+            text: "Follow your order",
             onPress: () => navigation.navigate('OrderTrack'),
             style: "default"
           }
@@ -162,7 +163,7 @@ export default function OrderCheckOut({ route, navigation }) {
           {menu.price && <Text style={styles.addressText2}>Price: </Text>}
           {menu.price + " €"}
         </Text>
-        <Text style={styles.label}>Address:</Text>
+        {address.street || address.city || address.region && <Text style={styles.label}>Address:</Text>}
         <Text style={styles.addressText}>
           {address.region && <Text style={styles.addressText2}>Region: </Text>}
           {address.region && `${address.region}\n`}

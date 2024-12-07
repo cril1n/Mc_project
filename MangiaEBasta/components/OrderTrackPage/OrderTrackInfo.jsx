@@ -8,7 +8,7 @@ export default function OrderTrackInfo({ orderInfo, menuInfo }) {
     if (orderInfo == null) {
         return (
             <View >
-                <Text style={styles.title}>Nessun ordine in consegna</Text>
+                <Text style={styles.title}>No orders available for delivery</Text>
             </View>
         )
     }
@@ -26,7 +26,7 @@ export default function OrderTrackInfo({ orderInfo, menuInfo }) {
 
     return (
         <View >
-            <Text style={styles.title}>Il tuo ordine è in consegna</Text>
+            <Text style={styles.title}>Your order is being delivered</Text>
             <Text>Delivery expected by: </Text>
             <Text>{formatDate(orderInfo.expectedDeliveryTimestamp)}</Text>
             <Text>Menu: {menuInfo.name}</Text>
