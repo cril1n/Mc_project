@@ -366,8 +366,9 @@ export default class ViewModel {
     }
     //ADDRESS
     static async getAddress() {
+        console("Getting delivery address...");
         const location = await this.getCurrentPosition();
-        console.log("location in getAddress:", location);
+        //console.log("location in getAddress:", location);
         const address = await Location.reverseGeocodeAsync({latitude: location.coords.latitude, longitude: location.coords.longitude});
         return address[0];
       }

@@ -3,7 +3,8 @@ import { View, Text } from 'react-native';
 import { styles } from '../../styles';
 
 
-export default function OrderTrackInfo({ orderInfo }) {
+export default function OrderTrackInfo({ orderInfo, menuInfo }) {
+
     if (orderInfo == null) {
         return (
             <View >
@@ -28,6 +29,7 @@ export default function OrderTrackInfo({ orderInfo }) {
             <Text style={styles.title}>Il tuo ordine è in consegna</Text>
             <Text>Delivery expected by: </Text>
             <Text>{formatDate(orderInfo.expectedDeliveryTimestamp)}</Text>
+            <Text>Menu: {menuInfo.name}</Text>
         </View>
     )
 } 

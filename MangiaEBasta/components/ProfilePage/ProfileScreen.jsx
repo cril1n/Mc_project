@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
-  StyleSheet,
   SafeAreaView,
-  ScrollView,
 } from "react-native";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -40,7 +38,7 @@ export default function ProfileScreen() {
     },
   ];
 
-  
+
 
   const renderMenuItem = ({
     icon,
@@ -50,17 +48,17 @@ export default function ProfileScreen() {
   }) => (
     <TouchableOpacity
       key={label}
-      style={styles.menuItem}
+      style={styles.profileMenuItem}
       onPress={() => navigation.navigate(screen)}
     >
-      <View style={styles.menuItemContent}>
+      <View style={styles.profileMenuItemContent}>
         <IconComponent name={icon} size={24} color="#666" />
-        <Text style={styles.menuItemText}>{label}</Text>
+        <Text style={styles.profileMenuItemText}>{label}</Text>
       </View>
       <MaterialIcons name="chevron-right" size={24} color="#666" />
     </TouchableOpacity>
   );
-  
+
   const deleteAccount = async () => {
     //NON FUNZIONA RESTART [TypeError: Cannot read property 'Restart' of null]
     await ViewModel.deleteAccount();
@@ -73,22 +71,18 @@ export default function ProfileScreen() {
         backgroundColor: "#fff",
       }}
     >
-      
-      <View style={styles.profileSection}>
-        <Image
-          source={require("../../assets/profileIcon.png")}
-          style={styles.profileImage}
-        />
-        <Text style={styles.profileName}>{user.firstName} {user.lastName}</Text>
+
+      <View style={styles.profileHeader}>
+        <Image source={require("../../assets/icons/logo.png")} style={styles.logo} />
+        <Text style={styles.profileHeaderName}>{user.firstName} {user.lastName}</Text>
       </View>
 
-      <View style={styles.menuContainer}>{menuItems.map(renderMenuItem)}</View>
+      <View style={styles.profileMenuContainer}>{menuItems.map(renderMenuItem)}</View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={deleteAccount}
-       >
-        <Feather name="log-out" size={24} color="#FF6B6B" />
+      <TouchableOpacity style={styles.logoutButton} onPress={deleteAccount}>
+        <Feather name="log-out" size={24} color="#FF6B6B" style={{marginLeft: 8}} />
         <Text style={styles.logoutText}> DELETE ACCOUNT</Text>
-        <MaterialIcons name="chevron-right" size={24} color="#FF6B6B" />
+        <MaterialIcons name="chevron-right" size={24} color="#FF6B6B" style={{marginRight: 8}} />
       </TouchableOpacity>
     </SafeAreaView>
   );

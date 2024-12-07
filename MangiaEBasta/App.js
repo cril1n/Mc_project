@@ -1,7 +1,9 @@
 import React, { useEffect, useState} from 'react';
-import { View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import ViewModel from './viewModel/ViewModel';
 import Root from './components/Root';
+import LoadingScreen from './components/LoadingScreen';
+import { styles } from './styles';
 
 export default function App() {
 
@@ -33,9 +35,7 @@ export default function App() {
 
   if (!initialized) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Initializing...</Text>
-      </View>
+      <LoadingScreen textToShow="Initializing..." />
     )
   }
 
@@ -66,7 +66,8 @@ export default function App() {
   
     const renderRequestLocationPermission = () => (
       <View style={styles.centeredContainer}>
-        <Text style={styles.infoText}>
+        <Image source={require('./assets/icons/location.png')} style={styles.locationLogo} />
+        <Text style={styles.locationInfoText}>
           To proceed, location permission is required. Please grant it by tapping the button below.
         </Text>
         <TouchableOpacity style={styles.button} onPress={handleLocationPermission}>
@@ -82,58 +83,5 @@ export default function App() {
     return <Root />;
   }
 }
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  button: {
-    position: 'absolute',
-    bottom: 90,
-    width: '80%',
-    backgroundColor: 'orange',
-    padding: 15,
-    alignItems: 'center',
-    borderRadius: 10,
-    elevation: 3,
-  },
-  buttonText: {
-    fontSize: 25,
-    color: 'white',
-    fontWeight: 'bold'
-  },
-  centeredContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  orangeButton: {
-    marginTop: 20,
-    width: '80%',
-    backgroundColor: 'orange',
-    paddingVertical: 15,
-    alignItems: 'center',
-    borderRadius: 10,
-    elevetion: 3,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  errorText: {
-    fontSize: 16,
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  infoText: {
-    fontSize: 16,
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-});
+
 

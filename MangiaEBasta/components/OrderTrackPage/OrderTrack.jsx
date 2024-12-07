@@ -12,8 +12,8 @@ export default function OrderTrack({route}) {
     const [order, setOrder] = useState(null);
     const { user } = useUser();
     const onDelivery = useRef(false);
-    //const { menu } = route.params;
-
+    //const { menu } = route.params || " ";
+    //console.log("Menu in OrderTrack:", menu);
 
     async function setLastScreen(screen) {
         try {
@@ -27,6 +27,7 @@ export default function OrderTrack({route}) {
     const fetchOrder = async () => {
         if (!user.lastOid) {
             console.log("No last order id");
+            onUnload();
             return;
         }
 
@@ -50,8 +51,7 @@ export default function OrderTrack({route}) {
                     onDelivery.current = false;
                 }
                 setOrder(null);
-                clearInterval(intervalIdRef.current);
-                intervalIdRef.current = null;
+                onUnload();
             } else if (orderInfo.status === 'ON_DELIVERY') {
                 setOrder(orderInfo);
                 onDelivery.current = true;
@@ -100,7 +100,7 @@ export default function OrderTrack({route}) {
         <View style={styles.orderContainer}>
 
             <View style={styles.infoContainer}>
-                <OrderTrackInfo orderInfo={order} />
+                <OrderTrackInfo orderInfo={order} menuInfo={menu}/>
             </View>
             <View style={styles.mapContainer}>
                 <OrderTrackMap orderInfo={order} onDelivery={onDelivery} />

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Image, View, ActivityIndicator, Text } from "react-native";
+import { Image } from "react-native";
 import { styles } from "../styles";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import ViewModel from "../viewModel/ViewModel";
 import Home from "./HomePage/Home";
 import OrderTrack from "./OrderTrackPage/OrderTrack";
 import Profile from "./ProfilePage/Profile";
+import LoadingScreen from "./LoadingScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LocationProvider } from "../model/LocationContext"; // Importa il contesto
 import { UserProvider } from "../model/UserContext";
-import { get } from "lodash";
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -50,39 +51,35 @@ export default function Root() {
 
   if (!initialLocation) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading position...</Text>
-      </View>
-    );
+      <LoadingScreen textToShow="Loading position..." />
+    )
   }
   if (!initialUser) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading user...</Text>
-      </View>
-    );
+      <LoadingScreen textToShow="Loading user..." />
+    )
   }
 
   return (
+
     <SafeAreaView style={{ flex: 1 }}>
       <LocationProvider initialLocation={initialLocation}>
         <UserProvider initialUser={initialUser}>
           <NavigationContainer>
             <Tab.Navigator
-              initialRouteName= {'Homepage'}
+              initialRouteName={lastScreen}
               screenOptions={{
                 tabBarStyle: {
-                  backgroundColor: '#f5ae3d', 
+                  backgroundColor: '#f5ae3d',
                   height: 70,
-                  paddingBottom: 10, 
-                  paddingTop: 10, 
+                  paddingBottom: 10,
+                  paddingTop: 10,
                 },
                 tabBarActiveTintColor: 'black',
                 tabBarInactiveTintColor: 'gray',
+                tabBarHideOnKeyboard: true,
               }}
-              
+
             >
               <Tab.Screen
                 name="Homepage"

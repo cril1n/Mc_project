@@ -48,36 +48,36 @@ export default function Form({ checkProfile, navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: "#F8F9FA" }]}>
-      <Text style={[styles.title, { color: "#333", textAlign: "center" }]}>
+      <Text style={[styles.formTitle, { color: "#333", textAlign: "center" }]}>
         Prima Registrazione
       </Text>
       <Text
-        style={[styles.subtitle, { marginBottom: 20, textAlign: "center" }]}
+        style={[styles.formSubtitle, { marginBottom: 20, textAlign: "center" }]}
       >
         Compila i seguenti campi per iniziare
       </Text>
       <TextInput
         placeholder="First name"
-        style={styles.input}
+        style={styles.formInput}
         placeholderTextColor="#aaa"
         value={user.firstName}
-        onChangeText={(text) => onChangeField(text, "firstName")}
+        onChangeText={setFirstName}
       />
       <TextInput
         placeholder="Last name"
-        style={styles.input}
+        style={styles.formInput}
         placeholderTextColor="#aaa"
         value={user.lastName}
-        onChangeText={(text) => onChangeField(text, "lastName")}
+        onChangeText={setLastName}
       />
       <TouchableOpacity
-        style={styles.submitButton}
+        style={styles.formSubmitButton}
         onPress={() => onSubmit()}
       >
-        <Text style={styles.submitButtonText}>Submit</Text>
+        <Text style={styles.formSubmitButtonText}>Submit</Text>
       </TouchableOpacity>
       {isRegistered && (
-        <Text style={styles.successText}>
+        <Text style={styles.formSuccessText}>
           Registrazione completata con successo!
         </Text>
       )}

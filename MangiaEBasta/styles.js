@@ -1,11 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+
+  //GENERAL
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    backgroundColor: "#fff",
   },
   orderContainer: {
     flex: 1,
@@ -15,46 +18,24 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  trackingInfoContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo: {
+    width: 250,
+    height: 190,
   },
-  profileSection: {
-    alignItems: 'center',
-    marginVertical: 20,
+  locationLogo: {
+    width: 200,
+    height: 200,
+    margin: 20,
   },
   icon: {
     width: 30,
     height: 30,
   },
-  card: {
-    margin: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+
+  //OrderTrack
   infoContainer: {
     flex: 1, // Occupa 1/3 dello spazio verticale
     backgroundColor: '#ffffff', // Colore di sfondo del componente info
@@ -72,38 +53,50 @@ export const styles = StyleSheet.create({
     // Aggiungi elevazione per Android
     elevation: 3,
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 12,
-  },
-  cardImage: {
-    width: 100,
-    height: 100,
+
+  //MenuDetail
+  menuDetailImage: {
+    width: 200,
+    height: 200,
     borderRadius: 12,
     margin: 8,
   },
-  menuContainer: {
+
+
+
+  //ProfileScreen
+  profileMenuContainer: {
     backgroundColor: "#F8F9FA",
     borderRadius: 16,
     margin: 16,
     padding: 8,
   },
-  menuItem: {
+  profileMenuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
   },
-  menuItemContent: {
+  profileMenuItemContent: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  menuItemText: {
+  profileMenuItemText: {
     marginLeft: 12,
     fontSize: 16,
     color: '#333',
+  },
+  profileHeader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 30,
+    marginTop: 50,
+  },
+  profileHeaderName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: 30,
   },
   logoutButton: {
     flexDirection: 'row',
@@ -117,71 +110,25 @@ export const styles = StyleSheet.create({
   logoutText: {
     color: '#FF6B6B',
     fontSize: 16,
+    marginLeft: 6,
     fontWeight: '600',
     flex: 1,
-    marginLeft: 0,
   },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFA500',
-    padding: 16,
-    borderRadius: 25,
-    marginTop: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginTop: 10,
-    marginBottom: 20, // Increased margin between boxes
-    width: '40%', // Shortened width
-  },
-  submitButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFA500', // Colore arancione
-    padding: 16,
-    borderRadius: 25,
-    marginTop: 20,
-    width: '50%', // Larghezza del bottone
-  },
-  submitButtonText: {
-    color: '#fff', // Colore del testo
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  submitButtonText: {
-    color: '#fff', // Colore del testo
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#fff", // Colore chiaro per lo sfondo
-  },
-  title: {
+
+
+  //Form
+  formTitle: {
     fontSize: 28, // Titolo più grande
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
   },
-  subtitle: {
+  formSubtitle: {
     fontSize: 16, // Sottotitolo informativo
     color: '#666',
     marginBottom: 20,
   },
-  input: {
+  formInput: {
     borderWidth: 1,
     borderColor: '#ddd', // Colore chiaro per i bordi
     backgroundColor: '#fff',
@@ -192,7 +139,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333', // Testo scuro
   },
-  submitButton: {
+  formSubmitButton: {
     backgroundColor: '#FFA500', // Arancione brillante
     paddingVertical: 14,
     paddingHorizontal: 25,
@@ -201,10 +148,287 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-  successText: {
+  formSubmitButtonText: {
+    color: '#fff', // Colore del testo
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  formSuccessText: {
     color: 'green', // Testo verde per il successo
     marginTop: 15,
     fontSize: 16,
     textAlign: 'center',
+  },
+
+  //PaymentInfo & ProfileInfo
+  infoContent: {
+    padding: 20,
+  },
+  infoFieldContainer: {
+    marginBottom: 20,
+  },
+  infoFieldLabel: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 5,
+  },
+  infoFieldText: {
+    fontSize: 18,
+    color: '#333',
+  },
+  infoInput: {
+    fontSize: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FF9F43', // Orange border color
+    paddingVertical: 5,
+  },
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFA500',
+    padding: 16,
+    borderRadius: 25,
+    marginTop: 20,
+  },
+  editButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  //APP.JS
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  button: {
+    position: 'absolute',
+    bottom: 90,
+    width: '80%',
+    backgroundColor: 'orange',
+    padding: 15,
+    alignItems: 'center',
+    borderRadius: 10,
+    elevation: 3,
+  },
+  buttonText: {
+    fontSize: 25,
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  orangeButton: {
+    marginTop: 20,
+    width: '80%',
+    backgroundColor: 'orange',
+    paddingVertical: 15,
+    alignItems: 'center',
+    borderRadius: 10,
+    elevetion: 3,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  locationInfoText: {
+    fontSize: 20,
+    color: '#333',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginHorizontal: 50,
+  },
+
+  //MENUCARD
+  cardContainer: {
+    marginBottom: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4, // Shadow for Android
+    backgroundColor: "#fff",
+    marginHorizontal: 20,
+    marginTop: 10,
+  },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 5,
+    elevation: 3
+  },
+  cardImage: {
+    width: 150,
+    height: 100,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  cardDetails: {
+    flex: 1,
+    padding: 10,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
+  },
+  cardDescription: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 10,
+  },
+  cardPrice: {
+    fontSize: 14,
+    color: "#555",
+  },
+  highlightedText: {
+    fontWeight: "bold",
+    color: "orange",
+  },
+
+  //menuDetail
+  menuDetailcontainer: {
+    padding: 30,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+  },
+  menuDetailmenuImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 15,
+    marginBottom: 20,
+  },
+  menuDetaildetailsContainer: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  menuDetailmenuName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+  },
+  menuDetailmenuDescription: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  menuDetailinfoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+  menuDetaillabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555',
+  },
+  menuDetailvalue: {
+    fontSize: 16,
+    color: '#555',
+  },
+  menuDetailorderButton: {
+    backgroundColor: '#FF9F43',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  menuDetailorderButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  //OrderCheckOut
+  orderCheckOutcontainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    justifyContent: "space-between",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 10,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  description: {
+    fontSize: 16,
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 30,
+    lineHeight: 24,
+  },
+  confirmButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FF9F43",
+    padding: 15,
+    borderRadius: 10,
+    marginHorizontal: 30,
+    elevation: 3,
+  },
+  confirmButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  addressContainer: {
+    marginVertical: 20,
+    padding: 15,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  label: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 5,
+  },
+  addressText: {
+    fontSize: 18,
+    color: "#333",
+  },
+  addressText2: {
+    fontSize: 18,
+    color: "#333",
+    fontWeight: "bold",
   },
 });

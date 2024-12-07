@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, StyleShee
 import { MaterialIcons } from '@expo/vector-icons';
 import { useUser } from '../../model/UserContext';
 import ViewModel from '../../viewModel/ViewModel';
+import { styles } from '../../styles';
 
 export default function PaymentInfo() {
   const { user, setUser } = useUser();
@@ -43,94 +44,90 @@ export default function PaymentInfo() {
   };
 // NON CAPISCO PERCHè SE ENTRO IN MODALITà EDIT MI SPARISCONO CERTI CAMPI A SCHERMO
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <KeyboardAvoidingView 
         style={{ flex: 1 }} 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-          <View style={styles.profileSection}>
-            <Image
-              source={require("../../assets/profileIcon.png")}
-              style={styles.profileImage}
-            />
-            <Text style={styles.profileName}>{user.firstName} {user.lastName}</Text>
+          <View style={styles.profileHeader}>
+            <Text style={styles.profileHeaderName}>{user.firstName} {user.lastName}</Text>
           </View>
 
-          <View style={styles.content}>
+          <View style={styles.infoContent}>
             {/* CARD NUMBER */}
-            <View style={styles.fieldContainer}>
-              <Text style={styles.fieldLabel}>CARD NUMBER:</Text>
+            <View style={styles.infoFieldContainer}>
+              <Text style={styles.infoFieldLabel}>CARD NUMBER:</Text>
               {isEditing ? (
                 <TextInput
-                  style={styles.input}
+                  style={styles.infoInput}
                   value={cardNumber || ''}
                   onChangeText={setCardNumber}
                   keyboardType="numeric"
                   autoFocus
                 />
               ) : (
-                <Text style={styles.fieldText}>{cardNumber}</Text>
+                <Text style={styles.infoFieldText}>{cardNumber}</Text>
               )}
             </View>
 
             {/* EXPIRY MONTH */}
-            <View style={styles.fieldContainer}>
-              <Text style={styles.fieldLabel}>EXPIRY MONTH:</Text>
+            <View style={styles.infoFieldContainer}>
+              <Text style={styles.infoFieldLabel}>EXPIRY MONTH:</Text>
               {isEditing ? (
                 <TextInput
-                  style={styles.input}
+                  style={styles.infoInput}
                   value={cardExpireMonth || ''}
                   onChangeText={setCardExpireMonth}
                   keyboardType="numeric"
                 />
               ) : (
-                <Text style={styles.fieldText}>{cardExpireMonth}</Text>
+                <Text style={styles.infoFieldText}>{cardExpireMonth}</Text>
               )}
             </View>
 
             {/* EXPIRY YEAR */}
-            <View style={styles.fieldContainer}>
-              <Text style={styles.fieldLabel}>EXPIRY YEAR:</Text>
+            <View style={styles.infoFieldContainer}>
+              <Text style={styles.infoFieldLabel}>EXPIRY YEAR:</Text>
               {isEditing ? (
                 <TextInput
-                  style={styles.input}
+                  style={styles.infoInput}
                   value={cardExpireYear || ''}
                   onChangeText={setCardExpireYear}
                   keyboardType="numeric"
                 />
               ) : (
-                <Text style={styles.fieldText}>{cardExpireYear}</Text>
+                <Text style={styles.infoFieldText}>{cardExpireYear}</Text>
               )}
             </View>
 
             {/* CVV */}
-            <View style={styles.fieldContainer}>
-              <Text style={styles.fieldLabel}>CVV:</Text>
+            <View style={styles.infoFieldContainer}>
+              <Text style={styles.infoFieldLabel}>CVV:</Text>
               {isEditing ? (
                 <TextInput
-                  style={styles.input}
+                  style={styles.infoInput}
                   value={cardCVV || ''}
                   onChangeText={setCardCVV}
                   keyboardType="numeric"
                 />
               ) : (
-                <Text style={styles.fieldText}>{cardCVV}</Text>
+                <Text style={styles.infoFieldText}>{cardCVV}</Text>
               )}
             </View>
 
             {/* CARD FULL NAME */}
-            <View style={styles.fieldContainer}>
-              <Text style={styles.fieldLabel}>CARD FULL NAME:</Text>
+            <View style={styles.infoFieldContainer}>
+              <Text style={styles.infoFieldLabel}>CARD FULL NAME:</Text>
               {isEditing ? (
                 <TextInput
-                  style={styles.input}
+                  style={styles.infoInput}
                   value={cardFullName || ''}
                   onChangeText={setCardFullName}
                 />
               ) : (
-                <Text style={styles.fieldText}>{cardFullName}</Text>
+                <Text style={styles.infoFieldText}>{cardFullName}</Text>
               )}
             </View>
 
@@ -153,58 +150,4 @@ export default function PaymentInfo() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  profileSection: {
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  profileName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  content: {
-    padding: 20,
-  },
-  fieldContainer: {
-    marginBottom: 20,
-  },
-  fieldLabel: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 5,
-  },
-  fieldText: {
-    fontSize: 18,
-    color: '#333',
-  },
-  input: {
-    fontSize: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: '#FF9F43', // Orange border color
-    paddingVertical: 5,
-  },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FF9F43', // Orange button
-    padding: 15,
-    borderRadius: 10,
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  editButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+

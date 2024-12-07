@@ -1,14 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
 import ViewModel from '../../viewModel/ViewModel';
-import { styles } from '../../styles';
 import MenuList from './MenuList';
 import MenuMap from './MenuMap';
 import MenuDetails from './MenuDetails';
 import MenuCard from './MenuCard';
 import OrderCheckOut from './OrderCheckOut';
+import LoadingScreen from '../LoadingScreen';
 import { useLocation } from '../../model/LocationContext';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
@@ -19,26 +18,26 @@ const MenuTab = createMaterialTopTabNavigator();
 
 // TO DO: Se aggiorno la posizione con il testo in PRofile, non mi passa la nuova posizione alle compomenti Mappa e lista
 
-function MenuTabScreen({location, menuList}) {
+function MenuTabScreen({ location, menuList }) {
   return (
     <MenuTab.Navigator
-    screenOptions={{
-      tabBarStyle: {
-        paddingBottom: 10,
-        paddingTop: 10,
-      },
-      tabBarActiveTintColor: 'black',
-      tabBarActiveBackgroundColor: 'black',
-      tabBarInactiveTintColor: 'gray',
-      tabBarIndicatorStyle: {
-        backgroundColor: '#f5ae3d', // Colore dell'indicatore della tab attiva
-        height: 3, // Altezza dell'indicatore
-      },
-      tabBarLabelStyle: {
-        fontSize: 14, // Dimensione del testo delle etichette
-        fontWeight: 'bold', // Peso del testo delle etichette
-      },
-    }}
+      screenOptions={{
+        tabBarStyle: {
+          paddingBottom: 10,
+          paddingTop: 10,
+        },
+        tabBarActiveTintColor: 'black',
+        tabBarActiveBackgroundColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+        tabBarIndicatorStyle: {
+          backgroundColor: '#f5ae3d', // Colore dell'indicatore della tab attiva
+          height: 3, // Altezza dell'indicatore
+        },
+        tabBarLabelStyle: {
+          fontSize: 14, // Dimensione del testo delle etichette
+          fontWeight: 'bold', // Peso del testo delle etichette
+        },
+      }}
     >
       <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ menuList }} />
       <MenuTab.Screen name="Menu map" component={MenuMap} initialParams={{ location, menuList }} />
@@ -47,21 +46,22 @@ function MenuTabScreen({location, menuList}) {
 }
 
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
   const { location } = useLocation()
   const [menuList, setMenuList] = useState(null);
 
   async function setLastScreen(screen) {
     try {
-        await ViewModel.setLastScreen(screen);
+      await ViewModel.setLastScreen(screen);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   }
 
   useFocusEffect(
     React.useCallback(() => {
-    setLastScreen('Homepage')}));
+      setLastScreen('Homepage')
+    }));
 
 
   useEffect(() => {
@@ -76,11 +76,8 @@ export default function Home({navigation}) {
 
   if (!menuList) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading menus...</Text>
-      </View>
-    );
+      <LoadingScreen textToShow="Loading menus..." />
+    )
   }
 
   return (
