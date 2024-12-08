@@ -6,17 +6,32 @@ import { styles } from '../../styles';
 import LoadingScreen from '../LoadingScreen';
 
 export default function MenuDetails({ route, navigation }) {
-    const { menu } = route.params;
+    const { menu } = route.params || {};
     const { location } = useLocation();
     const [base64WithPrefix, setImage] = useState(null);
     const [menuComplete, setMenu] = useState(null);
 
+    const handleExit = () => {
+        ViewModel.saveLastMenuOpened(null);
+    };
+
     useEffect(() => {
+        // Funzione da eseguire quando la schermata viene sfocata (esci dalla schermata)
+        const unsubscribe = navigation.addListener('blur', () => {
+            handleExit();
+        });
+
+        // Cleanup dell'evento listener
+        return unsubscribe;
+    }, [navigation]);
+
+    useEffect(() => {
+        ViewModel.saveLastMenuOpened(menu);
+
         setImage(menu.imageCode ? `data:image/jpeg;base64,${menu.imageCode}` : null);
         ViewModel.getMenuComplete(location.coords.latitude, location.coords.longitude, menu.mid)
             .then((menuData) => { setMenu(menuData); })
             .catch((error) => { console.log(error); });
-        console.log("Menu in MenuDetails:", menuComplete);
     }, []);
 
    
