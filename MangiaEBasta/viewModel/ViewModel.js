@@ -130,6 +130,23 @@ export default class ViewModel {
         }
     }
 
+    static async saveLastMenuOpened(menu) {
+        try {
+            await AsyncStorage.setItem("lastMenu", JSON.stringify(menu));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async checkLastMenuOpened() {
+        try {
+            let lastMenu = await AsyncStorage.getItem("lastMenu");
+            return JSON.parse(lastMenu);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     static async ResetApp() {
         try {
             await AsyncStorage.clear();

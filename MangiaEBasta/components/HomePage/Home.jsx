@@ -46,7 +46,7 @@ function MenuTabScreen({ location, menuList }) {
 }
 
 
-export default function Home({ navigation }) {
+export default function Home() {
   const { location } = useLocation()
   const [menuList, setMenuList] = useState(null);
 
