@@ -177,11 +177,12 @@ export default class ViewModel {
             console.log(error);
         }
     }
-    static async deleteAccount() {
+    static async deleteAccount(refresh, triggerRefresh) {
         try {
             await AsyncStorage.removeItem("user");
             await AsyncStorage.removeItem("sid");
             await AsyncStorage.removeItem("uid");
+            triggerRefresh();
             console.log("Account deleted");
         } catch (error) {
             console.log(error);
@@ -267,8 +268,9 @@ export default class ViewModel {
 
     static async sendOrder(mid, lat, lng, user, setUser) {
         try {
+            const savedSid = await this.getSid();
             console.log("Sending order...");
-            let response = await CommunicationController.sendOrder(mid, lat, lng, this.sid);
+            let response = await CommunicationController.sendOrder(mid, lat, lng, savedSid);
             console.log("Order sent");
             console.log("Updating user after order...");
             await this.updateUserAfterOrder(user, setUser, response.oid);
@@ -280,7 +282,6 @@ export default class ViewModel {
     }
 
     static async updateUserAfterOrder(user, setUser, newOid) {
-
         try {
             console.log("new oid:", newOid);
             user.lastOid = newOid;
@@ -292,6 +293,35 @@ export default class ViewModel {
 
     }
 
+    static async getMenuOrdered(){
+        const menuOrdered = null;
+        try{
+            menuOrdered = await AsyncStorage.getItem("menuOrdered");
+        }catch(error){
+            console.log(error);
+        }
+        return JSON.parse(menuOrdered);
+    }
+    static async saveMenuOrdered(menu){
+        if(menu == null){
+            return;
+        }
+        try{
+            await AsyncStorage.setItem("menuOrdered", JSON.stringify(menu));
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    static async removeMenuOrdered(){
+        try{
+            await AsyncStorage.removeItem("menuOrdered");
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
 
     //PROFILE INFO
 
@@ -320,7 +350,6 @@ export default class ViewModel {
 
     static validateCardField(field, value) {
         let error = null;
-
         switch (field) {
             case "cardFullName":
                 // Controllo: deve essere una stringa con solo caratteri e un solo spazio
@@ -364,9 +393,10 @@ export default class ViewModel {
 
         return error;
     }
+    
     //ADDRESS
     static async getAddress() {
-        console("Getting delivery address...");
+        console.log("Getting delivery address...");
         const location = await this.getCurrentPosition();
         //console.log("location in getAddress:", location);
         const address = await Location.reverseGeocodeAsync({latitude: location.coords.latitude, longitude: location.coords.longitude});

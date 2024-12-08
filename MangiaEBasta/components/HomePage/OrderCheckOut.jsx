@@ -45,7 +45,6 @@ export default function OrderCheckOut({ route, navigation }) {
         Alert.alert(
           "Data profile missing",
           "To place an order, please complete your profile.",
-
           [
             {
               text: "OK",
@@ -62,7 +61,6 @@ export default function OrderCheckOut({ route, navigation }) {
         Alert.alert(
           "Billing information missing",
           "Please make sure you have entered your payment details.",
-
           [
             {
               text: "OK",
@@ -91,7 +89,7 @@ export default function OrderCheckOut({ route, navigation }) {
                   text: "Follow your order",
                   onPress: () => {
                     navigation.popTo;
-                    navigation.navigate('OrderTrack', {menu: menu});
+                    navigation.navigate('OrderTrack', { menu });
                   },
                   style: "default"
                 }
@@ -112,7 +110,7 @@ export default function OrderCheckOut({ route, navigation }) {
             [
               {
                 text: "Follow your order",
-                onPress: () => navigation.navigate('OrderTrack', {menu: menu}),
+                onPress: () => navigation.navigate('OrderTrack', { menu }),
                 style: "default"
               }
             ],
@@ -152,32 +150,27 @@ export default function OrderCheckOut({ route, navigation }) {
         <Text style={styles.title}>Order Check Out</Text>
       </View>
       <View style={styles.addressContainer}>
-      <Text style={styles.label}>Order:</Text>
+        <Text style={styles.label}>Order:</Text>
         <Text style={styles.addressText}>
           {menu.name && <Text style={styles.addressText2}>Name: </Text>}
-          {menu.name && `${menu.name}\n`}
-
-          {menu.deliveryTime && <Text style={styles.addressText2}>Delivery time: </Text>}
-          {menu.deliveryTime && `${menu.deliveryTime}\n`}
-
+          {menu.name && <Text style={styles.addressText}>{menu.name}{"\n"}</Text>}
+          {(menu.deliveryTime || menu.deliveryTime == 0) && <Text style={styles.addressText2}>Delivery time: </Text>}
+          {(menu.deliveryTime || menu.deliveryTime == 0) &&  <Text style={styles.addressText}>{menu.deliveryTime}{"min \n"}</Text>}
           {menu.price && <Text style={styles.addressText2}>Price: </Text>}
-          {menu.price + " €"}
+          {menu.price && <Text style={styles.addressText}>{menu.price + " €"}{"\n"}</Text>}
         </Text>
-        {address.street || address.city || address.region && <Text style={styles.label}>Address:</Text>}
+        {(address.street || address.city || address.region) && (
+          <Text style={styles.label}>Address:</Text>
+        )}
         <Text style={styles.addressText}>
           {address.region && <Text style={styles.addressText2}>Region: </Text>}
-          {address.region && `${address.region}\n`}
-
+          {address.region && <Text style={styles.addressText}>{address.region}{"\n"}</Text>}
           {address.city && <Text style={styles.addressText2}>City: </Text>}
-          {address.city && `${address.city}\n`}
-
+          {address.city && <Text style={styles.addressText}>{address.city}{"\n"}</Text>}
           {address.street && <Text style={styles.addressText2}>Street: </Text>}
-          {address.street && `${address.street}\n`}
-
-          {address.streetNumber && (
-            <Text style={styles.addressText2}>Street n°: </Text>
-          )}
-          {address.streetNumber}
+          {address.street && <Text style={styles.addressText}>{address.street}{"\n"}</Text>}
+          {address.streetNumber && <Text style={styles.addressText2}>Street n°: </Text>}
+          {address.streetNumber && <Text style={styles.addressText}>{address.streetNumber}{"\n"}</Text>}
         </Text>
       </View>
       <View style={styles.content}>
@@ -195,4 +188,3 @@ export default function OrderCheckOut({ route, navigation }) {
     </View>
   );
 }
-

@@ -13,9 +13,11 @@ export default function OrderTrack({route}) {
     const { user } = useUser();
     const onDelivery = useRef(false);
     const { menu } = route.params || {};
-    const [menuOrdered, setMenuOrdered] = useState(menu);
+    ViewModel.saveMenuOrdered(menu);
+    const menuOrdered = ViewModel.getMenuOrdered();
     console.log("Menu in OrderTrack:", menu);
     console.log("Menu ordered in OrderTrack:", menuOrdered);
+
     async function setLastScreen(screen) {
         try {
             await ViewModel.setLastScreen(screen);
@@ -52,6 +54,7 @@ export default function OrderTrack({route}) {
                     onDelivery.current = false;
                 }
                 setOrder(null);
+                ViewModel.removeMenuOrdered();
                 onUnload();
             } else if (orderInfo.status === 'ON_DELIVERY') {
                 setOrder(orderInfo);

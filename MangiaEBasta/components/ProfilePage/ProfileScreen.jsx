@@ -10,6 +10,7 @@ import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../../styles";
 import { useUser } from "../../model/UserContext";
+import { useRefresh } from "../../model/RefreshContext";
 import ViewModel from "../../viewModel/ViewModel";
 
 
@@ -17,6 +18,7 @@ import ViewModel from "../../viewModel/ViewModel";
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useUser();
+  const { refresh, triggerRefresh } = useRefresh();
   const menuItems = [
     {
       icon: "person-outline",
@@ -60,8 +62,7 @@ export default function ProfileScreen() {
   );
 
   const deleteAccount = async () => {
-    //NON FUNZIONA RESTART [TypeError: Cannot read property 'Restart' of null]
-    await ViewModel.deleteAccount();
+    await ViewModel.deleteAccount(refresh, triggerRefresh);
   }
 
   return (

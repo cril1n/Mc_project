@@ -11,6 +11,7 @@ import LoadingScreen from "./LoadingScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LocationProvider } from "../model/LocationContext"; // Importa il contesto
 import { UserProvider } from "../model/UserContext";
+import { RefreshProvider } from "../model/RefreshContext";
 
 
 
@@ -65,71 +66,71 @@ export default function Root() {
     <SafeAreaView style={{ flex: 1 }}>
       <LocationProvider initialLocation={initialLocation}>
         <UserProvider initialUser={initialUser}>
-          <NavigationContainer>
-            <Tab.Navigator
-              initialRouteName={lastScreen}
-              screenOptions={{
-                tabBarStyle: {
-                  backgroundColor: '#f5ae3d',
-                  height: 70,
-                  paddingBottom: 10,
-                  paddingTop: 10,
-                },
-                tabBarActiveTintColor: 'black',
-                tabBarInactiveTintColor: 'gray',
-                tabBarHideOnKeyboard: true,
-              }}
-
-            >
-              <Tab.Screen
-                name="Homepage"
-                component={Home}
-                options={{
-                  tabBarIcon: () => (
-                    <Image
-                      source={require("../assets/icons/restaurant.png")}
-                      style={styles.icon}
-                    />
-                  ),
-                  headerShown: false,
-                  title: "Homepage",
-                }}
-              />
-              <Tab.Screen
-                name="OrderTrack"
-                component={OrderTrack}
-                options={{
-                  tabBarIcon: () => (
-                    <Image
-                      source={require("../assets/icons/order.png")}
-                      style={styles.icon}
-                    />
-                  ),
-                  title: "Order Track",
-                  headerTitleAlign: "center",
-                  headerTintColor: "#000",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
+            <NavigationContainer>
+              <Tab.Navigator
+                initialRouteName={lastScreen}
+                screenOptions={{
+                  tabBarStyle: {
+                    backgroundColor: '#f5ae3d',
+                    height: 75,
+                    paddingBottom: 10,
+                    paddingTop: 10,
                   },
+                  tabBarActiveTintColor: 'black',
+                  tabBarInactiveTintColor: 'gray',
+                  tabBarHideOnKeyboard: true,
                 }}
-              />
-              <Tab.Screen
-                name="Profile"
-                component={Profile}
-                options={{
-                  tabBarIcon: () => (
-                    <Image
-                      source={require("../assets/icons/account.png")}
-                      style={styles.icon}
-                    />
-                  ),
-                  title: "Profile",
-                  headerTitleAlign: "center",
-                  headerShown: false,
-                }}
-              />
-            </Tab.Navigator>
-          </NavigationContainer>
+
+              >
+                <Tab.Screen
+                  name="Homepage"
+                  component={Home}
+                  options={{
+                    tabBarIcon: () => (
+                      <Image
+                        source={require("../assets/icons/restaurant.png")}
+                        style={styles.icon}
+                      />
+                    ),
+                    headerShown: false,
+                    title: "Homepage",
+                  }}
+                />
+                <Tab.Screen
+                  name="OrderTrack"
+                  component={OrderTrack}
+                  options={{
+                    tabBarIcon: () => (
+                      <Image
+                        source={require("../assets/icons/order.png")}
+                        style={styles.icon}
+                      />
+                    ),
+                    title: "Order Track",
+                    headerTitleAlign: "center",
+                    headerTintColor: "#000",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
+                <Tab.Screen
+                  name="Profile"
+                  component={Profile}
+                  options={{
+                    tabBarIcon: () => (
+                      <Image
+                        source={require("../assets/icons/account.png")}
+                        style={styles.icon}
+                      />
+                    ),
+                    title: "Profile",
+                    headerTitleAlign: "center",
+                    headerShown: false,
+                  }}
+                />
+              </Tab.Navigator>
+            </NavigationContainer>
         </UserProvider>
       </LocationProvider>
     </SafeAreaView>
