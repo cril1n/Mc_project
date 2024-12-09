@@ -55,6 +55,7 @@ export default function OrderTrackMap({ orderInfo, onDelivery }) {
                 title="Drone"
                 description="Ordine in arrivo"
                 pinColor="red"
+                anchor={{ x: 0.4, y: 0.45 }}
             >
                 <Image
                     source={require('../../assets/icons/drone.png')}
@@ -64,9 +65,14 @@ export default function OrderTrackMap({ orderInfo, onDelivery }) {
             <Marker
                 coordinate={deliveryLocation}
                 title="Punto di ritiro"
-                description="Via Celoria 18, 20133 Milano"
                 pinColor="red"
-            />
+                anchor={{ x: 0.3, y: 0.9 }}
+            >
+                <Image
+                    source={require('../../assets/icons/destination.png')}
+                    style={{ width: 40, height: 40 }} // Specifica le dimensioni desiderate
+                />
+            </Marker>
             <Polyline
                 coordinates={[startPosition, deliveryLocation]}
                 strokeColor="#f5a433"

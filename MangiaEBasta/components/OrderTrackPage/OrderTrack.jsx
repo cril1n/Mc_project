@@ -7,16 +7,19 @@ import { styles } from '../../styles';
 import OrderTrackMap from './OrderTrackMap';
 import OrderTrackInfo from './OrderTrackInfo';
 
-export default function OrderTrack({route}) {
-    const intervalIdRef = useRef(null); // Persistenza del valore dell'intervallo
-    const [order, setOrder] = useState(null);
+
+export default function OrderTrack() {
     const { user } = useUser();
+
+   
+    // mi tengo traccia dell'ultimo menu ordinato perche se l'utente prova a fare un ordine quando ne ha uno in corso la route mi torna null e spariscono i dati del menu in consegna
+    const [lastMenuOrdered, setLastMenuOrdered] = useState(null);
+    const [order, setOrder] = useState(null);
+    
+    const intervalIdRef = useRef(null); // Persistenza del valore dell'intervallo
     const onDelivery = useRef(false);
-    const { menu } = route.params || {};
-    ViewModel.saveMenuOrdered(menu);
-    const menuOrdered = ViewModel.getMenuOrdered();
-    console.log("Menu in OrderTrack:", menu);
-    console.log("Menu ordered in OrderTrack:", menuOrdered);
+
+
 
     async function setLastScreen(screen) {
         try {
@@ -38,7 +41,6 @@ export default function OrderTrack({route}) {
             let orderInfo = await ViewModel.getLastOrderInfo(user.lastOid);
             console.log("Last order info in Order track:", orderInfo);
             if (!orderInfo || orderInfo.status === 'COMPLETED') {
-                console.log("ondelivery:", onDelivery)
                 if (onDelivery.current) {
                     console.log("Order completed");
                     Alert.alert(
@@ -52,10 +54,11 @@ export default function OrderTrack({route}) {
                         { cancelable: false }
                     );
                     onDelivery.current = false;
+                    setLastMenuOrdered(null);
                 }
                 setOrder(null);
-                ViewModel.removeMenuOrdered();
-                onUnload();
+                clearInterval(intervalIdRef.current);
+                intervalIdRef.current = null;
             } else if (orderInfo.status === 'ON_DELIVERY') {
                 setOrder(orderInfo);
                 onDelivery.current = true;
@@ -75,16 +78,23 @@ export default function OrderTrack({route}) {
 
     onUnload = () => {
         console.log("Componente smontato");
-        clearInterval(intervalIdRef.current);
-        intervalIdRef.current = null;
+        if (intervalIdRef.current) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+        }
     }
 
     useFocusEffect(
         React.useCallback(() => {
             setLastScreen('OrderTrack');
             fetchOrder();
+            ViewModel.getLastMenuOrdered().then((menu) => {
+                setLastMenuOrdered(menu);
+            });
             onLoad();
-            return () => onUnload();
+            return () => {
+                onUnload();
+            }
         }, [])
     );
 
@@ -104,7 +114,7 @@ export default function OrderTrack({route}) {
         <View style={styles.orderContainer}>
 
             <View style={styles.infoContainer}>
-                {menu && <OrderTrackInfo orderInfo={order} menuInfo={menu}/> || menuOrdered && <OrderTrackInfo orderInfo={order} menuInfo={menuOrdered}/> }
+                { lastMenuOrdered && <OrderTrackInfo orderInfo={order} menuInfo={lastMenuOrdered} />}
             </View>
             <View style={styles.mapContainer}>
                 <OrderTrackMap orderInfo={order} onDelivery={onDelivery} />

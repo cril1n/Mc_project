@@ -1,12 +1,10 @@
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useUser } from "../../model/UserContext";
 import { styles } from "../../styles";
 import ViewModel from "../../viewModel/ViewModel";
 export default function Form({ checkProfile, navigation }) {
   const { user, setUser } = useUser();
-  const { handleSubmit, setValue } = useForm();
   const [isRegistered, setIsRegistered] = useState(false);
   const [firstName, setFirstName] = useState(user.firstName || "");
   const [lastName, setLastName] = useState(user.lastName || "");

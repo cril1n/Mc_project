@@ -310,30 +310,23 @@ export default class ViewModel {
 
     }
 
-    static async getMenuOrdered(){
-        const menuOrdered = null;
+    static async getLastMenuOrdered(){
+        console.log("Getting last menu ordered...");
         try{
-            menuOrdered = await AsyncStorage.getItem("menuOrdered");
+            const menuOrdered = await AsyncStorage.getItem("lastMenuOrdered");
+            return JSON.parse(menuOrdered)
         }catch(error){
-            console.log(error);
-        }
-        return JSON.parse(menuOrdered);
-    }
-    static async saveMenuOrdered(menu){
-        if(menu == null){
-            return;
-        }
-        try{
-            await AsyncStorage.setItem("menuOrdered", JSON.stringify(menu));
-        }
-        catch(error){
             console.log(error);
         }
     }
 
-    static async removeMenuOrdered(){
+    static async saveLastMenuOrdered(menu){     
+        if(menu == null){
+            return;
+        }
+        console.log("Saving last menu ordered...");
         try{
-            await AsyncStorage.removeItem("menuOrdered");
+            await AsyncStorage.setItem("lastMenuOrdered", JSON.stringify(menu));
         }
         catch(error){
             console.log(error);

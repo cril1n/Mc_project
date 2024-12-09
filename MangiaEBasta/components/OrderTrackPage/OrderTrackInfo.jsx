@@ -5,6 +5,7 @@ import { styles } from '../../styles';
 
 export default function OrderTrackInfo({ orderInfo, menuInfo }) {
 
+
     if (orderInfo == null) {
         return (
             <View >
@@ -26,10 +27,14 @@ export default function OrderTrackInfo({ orderInfo, menuInfo }) {
 
     return (
         <View >
-            <Text style={styles.title}>Your order is being delivered</Text>
-            <Text>Delivery expected by: </Text>
-            <Text>{formatDate(orderInfo.expectedDeliveryTimestamp)}</Text>
-            <Text>Menu: {menuInfo.name}</Text>
+            <Text style={{fontSize: 23, fontWeight:'bold', color:'orange', marginBottom: 10}}>Your order is on delivery</Text>
+            <Text style={{fontSize: 15}}>Delivery expected by: </Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 6}}>{formatDate(orderInfo.expectedDeliveryTimestamp)}</Text>
+            <Text style={{fontSize: 15}}>Menu:</Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 6}}>{menuInfo.name}</Text>
+            <Text style={{fontSize: 15}}>Price: </Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold'}}>{menuInfo.price + " €"} </Text>
+
         </View>
     )
 } 

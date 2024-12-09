@@ -17,7 +17,6 @@ export default function OrderCheckOut({ route, navigation }) {
   const { user, setUser } = useUser();
   const { location } = useLocation();
   const [address, setAddress] = useState("");
-  console.log("Menu in OrderCheckOut:", menu);
 
   const setAddressPost = async () => {
     try {
@@ -80,7 +79,7 @@ export default function OrderCheckOut({ route, navigation }) {
           let orderInfo = await ViewModel.sendOrder(menu.mid, location.coords.latitude, location.coords.longitude, user, setUser);
           console.log(orderInfo);
           if (orderInfo) {
-            console.log(user);
+            await ViewModel.saveLastMenuOrdered(menu);
             Alert.alert(
               "Order Confirmed",
               "Your order has been confirmed.",
@@ -104,13 +103,14 @@ export default function OrderCheckOut({ route, navigation }) {
         let orderInfo = await ViewModel.sendOrder(menu.mid, location.coords.latitude, location.coords.longitude, user, setUser);
         console.log("Order info:", orderInfo);
         if (orderInfo) {
+          await ViewModel.saveLastMenuOrdered(menu);
           Alert.alert(
             "Order Confirmed",
             "Your order has been successfully confirmed.",
             [
               {
                 text: "Follow your order",
-                onPress: () => navigation.navigate('OrderTrack', { menu }),
+                onPress: () => navigation.navigate('OrderTrack'),
                 style: "default"
               }
             ],
@@ -155,7 +155,7 @@ export default function OrderCheckOut({ route, navigation }) {
           {menu.name && <Text style={styles.addressText2}>Name: </Text>}
           {menu.name && <Text style={styles.addressText}>{menu.name}{"\n"}</Text>}
           {(menu.deliveryTime || menu.deliveryTime == 0) && <Text style={styles.addressText2}>Delivery time: </Text>}
-          {(menu.deliveryTime || menu.deliveryTime == 0) &&  <Text style={styles.addressText}>{menu.deliveryTime}{"min \n"}</Text>}
+          {(menu.deliveryTime || menu.deliveryTime == 0) &&  <Text style={styles.addressText}>{menu.deliveryTime}{" min \n"}</Text>}
           {menu.price && <Text style={styles.addressText2}>Price: </Text>}
           {menu.price && <Text style={styles.addressText}>{menu.price + " €"}{"\n"}</Text>}
         </Text>
@@ -169,7 +169,7 @@ export default function OrderCheckOut({ route, navigation }) {
           {address.city && <Text style={styles.addressText}>{address.city}{"\n"}</Text>}
           {address.street && <Text style={styles.addressText2}>Street: </Text>}
           {address.street && <Text style={styles.addressText}>{address.street}{"\n"}</Text>}
-          {address.streetNumber && <Text style={styles.addressText2}>Street n°: </Text>}
+          {address.streetNumber && <Text style={styles.addressText2}>n°: </Text>}
           {address.streetNumber && <Text style={styles.addressText}>{address.streetNumber}{"\n"}</Text>}
         </Text>
       </View>

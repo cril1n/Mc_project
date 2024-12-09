@@ -106,6 +106,7 @@ export const styles = StyleSheet.create({
     margin: 16,
     padding: 16,
     borderRadius: 12,
+    elevation: 3, // Ombra per Android
   },
   logoutText: {
     color: '#FF6B6B',
@@ -147,6 +148,7 @@ export const styles = StyleSheet.create({
     width: '50%', // Larghezza del bottone
     alignItems: 'center',
     marginTop: 10,
+    elevation: 3, // Ombra per Android
   },
   formSubmitButtonText: {
     color: '#fff', // Colore del testo
@@ -190,6 +192,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 25,
     marginTop: 20,
+    elevation: 3, // Shadow for Android
   },
   editButtonText: {
     color: '#fff',
@@ -307,6 +310,7 @@ export const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: '#f9f9f9',
     alignItems: 'center',
+    flexGrow: 1,
   },
   menuDetailmenuImage: {
     width: '100%',
@@ -357,6 +361,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
+    elevation: 3,
   },
   menuDetailorderButtonText: {
     color: '#fff',
