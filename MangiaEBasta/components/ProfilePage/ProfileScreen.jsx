@@ -30,7 +30,7 @@ export default function ProfileScreen() {
       icon: "shopping-bag",
       label: "Last Order",
       component: Feather,
-      screen: "Last order Info",
+      screen: "Last Order Info",
     },
     {
       icon: "credit-card",
