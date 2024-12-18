@@ -67,6 +67,8 @@ export const styles = StyleSheet.create({
   //ProfileScreen
   profileMenuContainer: {
     backgroundColor: "#F8F9FA",
+    borderWidth: 2,
+    borderColor: "#FFB534",
     borderRadius: 16,
     margin: 16,
     padding: 8,
@@ -102,7 +104,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FFF0F0',
+    backgroundColor: '#F8F9FA',
     margin: 16,
     padding: 16,
     borderRadius: 12,
@@ -356,7 +358,7 @@ export const styles = StyleSheet.create({
     color: '#555',
   },
   menuDetailorderButton: {
-    backgroundColor: '#FF9F43',
+    backgroundColor: '#FFB534',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -402,7 +404,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF9F43",
+    backgroundColor: "#FFB534",
     padding: 15,
     borderRadius: 10,
     marginHorizontal: 30,

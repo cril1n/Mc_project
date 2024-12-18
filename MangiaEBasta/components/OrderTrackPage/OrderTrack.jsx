@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Image } from 'react-native';
 import ViewModel from '../../viewModel/ViewModel';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUser } from '../../model/UserContext';
@@ -105,7 +105,8 @@ export default function OrderTrack() {
     if (order == null) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>No orders in progress</Text>
+                <Image source={require('../../assets/icons/logo.png')} style={styles.logo} />
+                <Text style={{fontWeigth: 'bold', fontSize: 15, marginTop: 20}}>No orders in progress</Text>
             </View>
         )
     }

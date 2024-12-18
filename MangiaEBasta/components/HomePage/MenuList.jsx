@@ -15,7 +15,7 @@ export default function MenuList({ route, navigation }) {
     }, []);
 
     return (
-        <ScrollView>
+        <ScrollView style={{marginTop: 10}}>
             {menuList.map((menu) => (<MenuCard key={menu.mid} menu={menu} navigation={navigation} />))}
         </ScrollView>
     );

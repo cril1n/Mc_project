@@ -82,12 +82,11 @@ export default function OrderCheckOut({ route, navigation }) {
             await ViewModel.saveLastMenuOrdered(menu);
             Alert.alert(
               "Order Confirmed",
-              "Your order has been confirmed.",
+              "Your order has been successfully confirmed.",
               [
                 {
                   text: "Follow your order",
                   onPress: () => {
-                    navigation.popTo;
                     navigation.navigate('OrderTrack', { menu });
                   },
                   style: "default"
@@ -110,7 +109,9 @@ export default function OrderCheckOut({ route, navigation }) {
             [
               {
                 text: "Follow your order",
-                onPress: () => navigation.navigate('OrderTrack'),
+                onPress: () => {
+                  navigation.navigate('OrderTrack')
+                },
                 style: "default"
               }
             ],
@@ -146,7 +147,7 @@ export default function OrderCheckOut({ route, navigation }) {
   return (
     <View style={styles.orderCheckOutcontainer}>
       <View style={styles.header}>
-        <MaterialIcons name="shopping-cart" size={48} color="#FF9F43" />
+        <MaterialIcons name="shopping-cart" size={48} color="#FFB534" />
         <Text style={styles.title}>Order Check Out</Text>
       </View>
       <View style={styles.addressContainer}>

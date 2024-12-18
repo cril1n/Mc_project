@@ -58,7 +58,7 @@ export default function Init() {
   const renderLocationDeniedMessage = () => (
     <View style={styles.centeredContainer}>
       <Text style={styles.errorText}>
-        Location permission refused. Please enable location permission from the device settings or reinstall the app.
+        Location permission refused. Please enable location permission from the device settings or reinstall the app. Without location permission, the app cannot function properly.
       </Text>
     </View>
   );

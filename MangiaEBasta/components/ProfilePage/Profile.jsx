@@ -44,7 +44,7 @@ export default function Profile() {
 
   useEffect(() => {
     checkProfile();
-  
+
   }, [user]);
 
   if (!user) {
@@ -65,6 +65,11 @@ export default function Profile() {
       screenOptions={{
         headerTitleAlign: 'center',
         headerTintColor: '#000',
+        headerStyle: {
+          elevation: 5,
+          borderBottomWidth: 2, // Aggiunge la linea sotto la barra
+          borderBottomColor: "#FFB534", // Colore della linea
+        },
         headerTitleStyle: {
           fontWeight: 'bold'
         },

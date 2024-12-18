@@ -23,20 +23,27 @@ function MenuTabScreen({ location, menuList }) {
     <MenuTab.Navigator
       screenOptions={{
         tabBarStyle: {
-          paddingBottom: 10,
-          paddingTop: 10,
+          height: 70,
+          backgroundColor: '#ffffff',
+          elevation: 4,
+          shadowColor: '#000000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
         },
         tabBarActiveTintColor: 'black',
-        tabBarActiveBackgroundColor: 'black',
-        tabBarInactiveTintColor: 'gray',
+        tabBarInactiveTintColor: '#8e8e93',
         tabBarIndicatorStyle: {
-          backgroundColor: '#f5ae3d', // Colore dell'indicatore della tab attiva
-          height: 3, // Altezza dell'indicatore
+          backgroundColor: '#f5ae3d',
+          height: 3,
         },
         tabBarLabelStyle: {
-          fontSize: 14, // Dimensione del testo delle etichette
-          fontWeight: 'bold', // Peso del testo delle etichette
+          fontSize: 15,
+          fontWeight: '700',
+          marginTop: 20
         },
+        tabBarPressColor: '#f5ae3d20',
+        tabBarPressOpacity: 0.8,
       }}
     >
       <MenuTab.Screen name="Menu list" component={MenuList} initialParams={{ menuList }} />
@@ -81,7 +88,20 @@ export default function Home() {
   }
 
   return (
-    <Stack.Navigator >
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTintColor: '#000',
+        headerStyle: {
+          elevation: 5,
+          borderBottomWidth: 2, // Aggiunge la linea sotto la barra
+          borderBottomColor: "#FFB534", // Colore della linea
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold'
+        },
+      }}
+    >
       <Stack.Screen options={{ headerShown: false }} name="Restaurants " >
         {props => <MenuTabScreen {...props} location={location} menuList={menuList} />}
       </Stack.Screen>
