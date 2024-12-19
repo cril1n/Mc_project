@@ -75,7 +75,7 @@ export default function Profile() {
         },
       }}
     >
-      <Stack.Screen name="Profile " component={ProfileScreen} />
+      <Stack.Screen name="Profile screen" component={ProfileScreen} />
       <Stack.Screen name="Profile Info" component={ProfileInfo} />
       <Stack.Screen name="Last Order Info" component={LastOrderInfo} />
       <Stack.Screen name="Payment Info" component={PaymentInfo} />

@@ -102,7 +102,7 @@ export default function Home() {
         },
       }}
     >
-      <Stack.Screen options={{ headerShown: false }} name="Restaurants " >
+      <Stack.Screen options={{ headerShown: false }} name="Restaurants" >
         {props => <MenuTabScreen {...props} location={location} menuList={menuList} />}
       </Stack.Screen>
       <Stack.Screen name="Menu Card" component={MenuCard} />

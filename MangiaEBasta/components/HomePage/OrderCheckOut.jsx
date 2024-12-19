@@ -47,7 +47,7 @@ export default function OrderCheckOut({ route, navigation }) {
           [
             {
               text: "OK",
-              onPress: () => navigation.jumpTo('Profile', { screen: 'Profile Info' }),
+              onPress: () => navigation.navigate('Profile'),
               style: "default"
             }
           ],
