@@ -19,8 +19,6 @@ export default function OrderTrack() {
     const intervalIdRef = useRef(null); // Persistenza del valore dell'intervallo
     const onDelivery = useRef(false);
 
-
-
     async function setLastScreen(screen) {
         try {
             await ViewModel.setLastScreen(screen);
@@ -28,7 +26,6 @@ export default function OrderTrack() {
             console.log(error);
         }
     }
-
 
     const fetchOrder = async () => {
         if (!user.lastOid) {
@@ -39,6 +36,12 @@ export default function OrderTrack() {
 
         try {
             let orderInfo = await ViewModel.getLastOrderInfo(user.lastOid);
+            if (!orderInfo) {
+                console.log("Order info is null or undefined");
+                setOrder(null);
+                clearInterval(intervalIdRef.current);
+                return;
+            }
             console.log("Last order info in Order track:", orderInfo);
             if (!orderInfo || orderInfo.status === 'COMPLETED') {
                 if (onDelivery.current) {
@@ -46,11 +49,7 @@ export default function OrderTrack() {
                     Alert.alert(
                         "Order completed!",
                         "Your order has been delivered!",
-                        [
-                            {
-                                text: "OK"
-                            }
-                        ],
+                        [{ text: "OK" }],
                         { cancelable: false }
                     );
                     onDelivery.current = false;
@@ -60,9 +59,9 @@ export default function OrderTrack() {
                 clearInterval(intervalIdRef.current);
                 intervalIdRef.current = null;
             } else if (orderInfo.status === 'ON_DELIVERY') {
+                console.log("Order on delivery");
                 setOrder(orderInfo);
                 onDelivery.current = true;
-
             }
         } catch (error) {
             console.log(error);
@@ -71,10 +70,14 @@ export default function OrderTrack() {
 
     onLoad = () => {
         console.log("Componente montato");
+        if (intervalIdRef.current) {
+            console.log("Interval already running, clearing existing one");
+            clearInterval(intervalIdRef.current);
+        }
         intervalIdRef.current = setInterval(() => {
             fetchOrder();
         }, 5000);
-    }
+    };
 
     onUnload = () => {
         console.log("Componente smontato");
@@ -86,27 +89,26 @@ export default function OrderTrack() {
 
     useFocusEffect(
         React.useCallback(() => {
+            console.log("OrderTrack focused");
             setLastScreen('OrderTrack');
             fetchOrder();
             ViewModel.getLastMenuOrdered().then((menu) => {
                 setLastMenuOrdered(menu);
             });
             onLoad();
+    
             return () => {
+                console.log("OrderTrack unfocused");
                 onUnload();
-            }
+            };
         }, [])
     );
-
-
-
-
 
     if (order == null) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('../../assets/icons/logo.png')} style={styles.logo} />
-                <Text style={{fontWeigth: 'bold', fontSize: 15, marginTop: 20}}>No orders in progress</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 15, marginTop: 20}}>No orders in progress</Text>
             </View>
         )
     }
