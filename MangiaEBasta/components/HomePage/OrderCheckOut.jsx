@@ -36,6 +36,7 @@ export default function OrderCheckOut({ route, navigation }) {
   }, [location]);
 
   const sendOrder = async () => {
+    console.log("User:", user);
     try {
       let validUserInfo = await ViewModel.checkUserInfoBeforeOrder(user);
       let validUserCard = await ViewModel.checkUserCardBeforeOrder(user);
@@ -58,7 +59,7 @@ export default function OrderCheckOut({ route, navigation }) {
 
       if (!validUserCard) {
         Alert.alert(
-          "Billing information missing",
+          "Billing information wrong",
           "Please make sure you have entered your payment details.",
           [
             {

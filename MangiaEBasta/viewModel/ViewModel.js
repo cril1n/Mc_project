@@ -42,7 +42,7 @@ export default class ViewModel {
             console.log(error);
         }
         if (lastScreen == null) {
-            await AsyncStorage.setItem("lastScreen", "Homepage"); 
+            await AsyncStorage.setItem("lastScreen", "Homepage");
         }
         // Se non è il primo avvio, non faccio nulla perche i dati saranno gia presenti nell'AsyncStorage
         if (sid && uid) {
@@ -260,7 +260,7 @@ export default class ViewModel {
 
     static async checkUserCardBeforeOrder(user) {
         if (!user.cardFullName || !user.cardNumber || !user.cardCVV || !user.cardExpireMonth || !user.cardExpireYear ||
-            user.cardFullName == "" || user.cardNumber == "" || user.cardCVV == "" || user.cardExpireMonth == "" || user.cardExpireYear  == ""
+            user.cardFullName == "" || user.cardNumber == "" || user.cardCVV == "" || user.cardExpireMonth == "" || user.cardExpireYear == "" || user.cardNumber[0] != "1"
         ) {
             return false;
         }
@@ -268,7 +268,7 @@ export default class ViewModel {
     }
 
     static async checkUserInfoBeforeOrder(user) {
-        if (!user.firstName || !user.lastName || user.firstName == "" || user.lastName == "" ){
+        if (!user.firstName || !user.lastName || user.firstName == "" || user.lastName == "") {
             return false;
         }
         return true;
@@ -310,25 +310,25 @@ export default class ViewModel {
 
     }
 
-    static async getLastMenuOrdered(){
+    static async getLastMenuOrdered() {
         console.log("Getting last menu ordered...");
-        try{
+        try {
             const menuOrdered = await AsyncStorage.getItem("lastMenuOrdered");
             return JSON.parse(menuOrdered)
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
     }
 
-    static async saveLastMenuOrdered(menu){     
-        if(menu == null){
+    static async saveLastMenuOrdered(menu) {
+        if (menu == null) {
             return;
         }
         console.log("Saving last menu ordered...");
-        try{
+        try {
             await AsyncStorage.setItem("lastMenuOrdered", JSON.stringify(menu));
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
     }
@@ -337,16 +337,16 @@ export default class ViewModel {
 
     static validateProfileInfoField(field, value) {
         let error = null;
-        switch (field)  {
+        switch (field) {
             case "firstName":
                 // Controllo: deve essere una stringa con solo caratteri e che non sia vuota
-                if(!/^[a-zA-Z]+$/.test(value)|| value == "" ) {
+                if (!/^[a-zA-Z]+$/.test(value) || value == "") {
                     error = "The first name must be a valid string with only letters.";
                 }
                 break;
             case "lastName":
                 // Controllo: deve essere una stringa con solo caratteri e che non sia vuota
-                if(!/^[a-zA-Z]+$/.test(value) || value == "") {
+                if (!/^[a-zA-Z]+$/.test(value) || value == "") {
                     error = "The last name must be a valid string with only letters.";
                 }
                 break;
@@ -384,8 +384,9 @@ export default class ViewModel {
 
             case "cardExpireYear":
                 // Controllo: deve essere una stringa di 2 cifre
-                if (!/^\d{2}$/.test(value)) {
-                    error = "The expiration year must be a valid 2-digit number.";
+                const currentYear = new Date().getFullYear() % 100; 
+                if (!/^\d{2}$/.test(value) || parseInt(value) <= currentYear-1) {
+                    error = "The expiration year must be a valid 2-digit number and greater than the current year.";
                 }
                 break;
 
@@ -403,14 +404,14 @@ export default class ViewModel {
 
         return error;
     }
-    
+
     //ADDRESS
     static async getAddress() {
         console.log("Getting delivery address...");
         const location = await this.getCurrentPosition();
         //console.log("location in getAddress:", location);
-        const address = await Location.reverseGeocodeAsync({latitude: location.coords.latitude, longitude: location.coords.longitude});
+        const address = await Location.reverseGeocodeAsync({ latitude: location.coords.latitude, longitude: location.coords.longitude });
         return address[0];
-      }
+    }
 }
 

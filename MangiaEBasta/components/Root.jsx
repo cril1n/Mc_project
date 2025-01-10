@@ -69,32 +69,28 @@ export default function Root() {
           <NavigationContainer>
             <Tab.Navigator
               initialRouteName={lastScreen}
-              screenOptions={{
+              screenOptions={({
                 tabBarStyle: {
                   backgroundColor: "white",
-                  borderRadius: 20,
-                  height: 85,
-                  elevation: 5,
-                  borderTopWidth: 0,
-                  elevation: 0,
+                  height: 70,
+                  elevation: 8,
+                  borderTopWidth: 2,  // Aggiunto spessore del bordo superiore
+                  borderColor: "#FFB534",
                 },
-                tabBarActiveTintColor: "black",
+                
+                tabBarActiveTintColor: "#FFB534",
                 tabBarInactiveTintColor: "grey",
                 tabBarIconStyle: {
-                  marginTop: 7,
-                  width: 50,
-                  height: 50,
-                  paddingHorizontal: 50,
-                  backgroundColor: "#FFB534",
-                  borderRadius: 20,                  
+                  marginTop: 5,
                 },
                 tabBarLabelStyle: {
                   fontSize: 12,
                   fontWeight: "bold",
+                  marginBottom: 5,
                 },
                 tabBarHideOnKeyboard: true,
-                popToTopOnBlur: true,
-              }}
+                
+              })}
 
             >
               <Tab.Screen

@@ -79,6 +79,7 @@ export default class CommunicationController {
         const verb = 'PUT';
         const queryParams = {};
         const bodyParams = userData
+        console.log("bodyParams (dentro modifyuser):", bodyParams);
         try{
             return await this.genericRequest(id, verb, queryParams, bodyParams);
         }catch(error){
