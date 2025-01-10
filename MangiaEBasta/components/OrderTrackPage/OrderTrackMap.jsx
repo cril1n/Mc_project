@@ -40,45 +40,46 @@ export default function OrderTrackMap({ orderInfo, onDelivery }) {
         });
     }, [orderInfo])
 
-    return (
-        <MapView
-            style={styles.map}
-            showsUserLocation={true}
-            showsCompass={true}
-            showsMyLocationButton={true}
-            zoomControlEnabled={true}
-            loadingEnabled={true}
-            region={region}
-        >
-            <Marker
-                coordinate={currentOrderPosition}
-                title="Drone"
-                description="Ordine in arrivo"
-                pinColor="red"
-                anchor={{ x: 0.4, y: 0.45 }}
+    if(region){
+        return (
+            <MapView
+                style={styles.map}
+                showsUserLocation={true}
+                showsCompass={true}
+                showsMyLocationButton={true}
+                zoomControlEnabled={true}
+                loadingEnabled={true}
+                region={region}
             >
-                <Image
-                    source={require('../../assets/icons/drone.png')}
-                    style={{ width: 30, height: 30 }} // Specifica le dimensioni desiderate
+                <Marker
+                    coordinate={currentOrderPosition}
+                    title="Drone"
+                    description="Ordine in arrivo"
+                    pinColor="red"
+                    anchor={{ x: 0.4, y: 0.45 }}
+                >
+                    <Image
+                        source={require('../../assets/icons/drone.png')}
+                        style={{ width: 30, height: 30 }} // Specifica le dimensioni desiderate
+                    />
+                </Marker>
+                <Marker
+                    coordinate={deliveryLocation}
+                    title="Punto di ritiro"
+                    pinColor="red"
+                    anchor={{ x: 0.3, y: 0.9 }}
+                >
+                    <Image
+                        source={require('../../assets/icons/destination.png')}
+                        style={{ width: 40, height: 40 }} // Specifica le dimensioni desiderate
+                    />
+                </Marker>
+                <Polyline
+                    coordinates={[startPosition, deliveryLocation]}
+                    strokeColor="#f5a433"
+                    strokeWidth={3}
                 />
-            </Marker>
-            <Marker
-                coordinate={deliveryLocation}
-                title="Punto di ritiro"
-                pinColor="red"
-                anchor={{ x: 0.3, y: 0.9 }}
-            >
-                <Image
-                    source={require('../../assets/icons/destination.png')}
-                    style={{ width: 40, height: 40 }} // Specifica le dimensioni desiderate
-                />
-            </Marker>
-            <Polyline
-                coordinates={[startPosition, deliveryLocation]}
-                strokeColor="#f5a433"
-                strokeWidth={3}
-            />
-
-        </MapView>
-    )
+            </MapView>
+        )
+    }
 }
