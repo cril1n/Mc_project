@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import { styles } from "../../styles";
 import { useUser } from "../../model/UserContext";
 import { useRefresh } from "../../model/RefreshContext";
 import ViewModel from "../../viewModel/ViewModel";
+import BasicAlert from "../BasicAlert";
+import { set } from "react-hook-form";
 
 
 
@@ -19,6 +21,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useUser();
   const { refresh, triggerRefresh } = useRefresh();
+  const [showAlert, setShowAlert] = useState(false)
   const menuItems = [
     {
       icon: "person-outline",
@@ -27,18 +30,20 @@ export default function ProfileScreen() {
       screen: "Profile Info",
     },
     {
-      icon: "shopping-bag",
-      label: "Last Order",
-      component: Feather,
-      screen: "Last Order Info",
-    },
-    {
       icon: "credit-card",
       label: "Payment Info",
       component: Feather,
       screen: "Payment Info",
     },
+    {
+      icon: "shopping-bag",
+      label: "Last Order",
+      component: Feather,
+      screen: "Last Order Info",
+    },
   ];
+
+
 
 
 
@@ -62,7 +67,16 @@ export default function ProfileScreen() {
   );
 
   const deleteAccount = async () => {
+    setShowAlert(false);
     await ViewModel.deleteAccount(refresh, triggerRefresh);
+  }
+
+  const openDeleteAlert = () => {
+    setShowAlert(true);
+  }
+
+  const resetAlert = () => {
+    setShowAlert(false);
   }
 
   return (
@@ -72,6 +86,15 @@ export default function ProfileScreen() {
         backgroundColor: "#fff",
       }}
     >
+      {showAlert && (
+        <BasicAlert
+          title="Delete Account"
+          message="Are you sure you want to delete your account?"
+          confirmText="Delete"
+          onConfirm={deleteAccount}
+          onClose={resetAlert}
+        />
+      )}
 
       <View style={styles.profileHeader}>
         <Image source={require("../../assets/icons/logo.png")} style={styles.logo} />
@@ -80,11 +103,13 @@ export default function ProfileScreen() {
 
       <View style={styles.profileMenuContainer}>{menuItems.map(renderMenuItem)}</View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={deleteAccount}>
-        <Feather name="log-out" size={24} color="#FF6B6B" style={{marginLeft: 8}} />
+      <TouchableOpacity style={styles.logoutButton} onPress={openDeleteAlert}>
+        <Feather name="log-out" size={24} color="#FF6B6B" style={{ marginLeft: 8 }} />
         <Text style={styles.logoutText}> DELETE ACCOUNT</Text>
-        <MaterialIcons name="chevron-right" size={24} color="#FF6B6B" style={{marginRight: 8}} />
+        <MaterialIcons name="chevron-right" size={24} color="#FF6B6B" style={{ marginRight: 8 }} />
       </TouchableOpacity>
+
+
     </SafeAreaView>
   );
 }

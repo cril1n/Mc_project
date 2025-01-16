@@ -4,19 +4,21 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  StyleSheet,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import ViewModel from "../../viewModel/ViewModel";
 import { useLocation } from "../../model/LocationContext";
 import { useUser } from "../../model/UserContext";
 import { styles } from "../../styles";
+import BasicAlert from "../BasicAlert";
 
 export default function OrderCheckOut({ route, navigation }) {
   const { menu } = route.params || {};
   const { user, setUser } = useUser();
   const { location } = useLocation();
   const [address, setAddress] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
 
   const setAddressPost = async () => {
     try {
@@ -42,34 +44,24 @@ export default function OrderCheckOut({ route, navigation }) {
       let validUserCard = await ViewModel.checkUserCardBeforeOrder(user);
 
       if (!validUserInfo) {
-        Alert.alert(
-          "Data profile missing",
-          "To place an order, please complete your profile.",
-          [
-            {
-              text: "OK",
-              onPress: () => navigation.navigate('Profile'),
-              style: "default"
-            }
-          ],
-          { cancelable: false }
-        );
+        setAlertProps({
+          title: "Data profile missing",
+          message: "To place an order, please complete your profile.",
+          confirmText: "Go to profile",
+          onConfirm: () => navigation.navigate('Profile')
+        });
+        setShowAlert(true);
         return;
       }
 
       if (!validUserCard) {
-        Alert.alert(
-          "Billing information wrong",
-          "Please make sure you have entered your payment details.",
-          [
-            {
-              text: "OK",
-              onPress: () => navigation.navigate('Profile', { screen: 'Payment Info' }),
-              style: "default"
-            }
-          ],
-          { cancelable: false }
-        );
+        setAlertProps({
+          title: "Billing information wrong",
+          message: "Please make sure you have entered your payment details.",
+          confirmText: "Go to billing section",
+          onConfirm: () => navigation.navigate('Profile', { screen: 'Payment Info' })
+        });
+        setShowAlert(true);
         return;
       }
 
@@ -81,20 +73,13 @@ export default function OrderCheckOut({ route, navigation }) {
           console.log(orderInfo);
           if (orderInfo) {
             await ViewModel.saveLastMenuOrdered(menu);
-            Alert.alert(
-              "Order Confirmed",
-              "Your order has been successfully confirmed.",
-              [
-                {
-                  text: "Follow your order",
-                  onPress: () => {
-                    navigation.navigate('OrderTrack', { menu });
-                  },
-                  style: "default"
-                }
-              ],
-              { cancelable: false }
-            );
+            setAlertProps({
+              title: "Order Confirmed",
+              message: "Your order has been successfully confirmed.",
+              confirmText: "Follow your order",
+              onConfirm: () => navigation.navigate('OrderTrack', { menu })
+            });
+            setShowAlert(true);
           }
           return;
         }
@@ -104,41 +89,24 @@ export default function OrderCheckOut({ route, navigation }) {
         console.log("Order info:", orderInfo);
         if (orderInfo) {
           await ViewModel.saveLastMenuOrdered(menu);
-          Alert.alert(
-            "Order Confirmed",
-            "Your order has been successfully confirmed.",
-            [
-              {
-                text: "Follow your order",
-                onPress: () => {
-                  navigation.navigate('OrderTrack')
-                },
-                style: "default"
-              }
-            ],
-            { cancelable: false }
-          );
+          setAlertProps({
+            title: "Order Confirmed",
+            message: "Your order has been successfully confirmed.",
+            confirmText: "Follow your order",
+            onConfirm: () => navigation.navigate('OrderTrack', { menu })
+          });
+          setShowAlert(true);
         }
         return;
       }
 
-      Alert.alert(
-        "Order in progress",
-        "You already have an order in progress. You cannot place another order until it is delivered.",
-        [
-          {
-            text: "OK",
-            style: "default"
-          },
-          {
-            text: "Follow your order",
-            onPress: () => navigation.navigate('OrderTrack'),
-            style: "default"
-          }
-        ],
-        { cancelable: false }
-      )
-
+      setAlertProps({
+        title: "Order still in progress",
+        message: "You already have an order in progress. You cannot place another order until it is delivered.",
+        confirmText: "Follow your order",
+        onConfirm: () => navigation.navigate('OrderTrack')
+      });
+      setShowAlert(true);
 
     } catch (error) {
       console.log(error);
@@ -157,7 +125,7 @@ export default function OrderCheckOut({ route, navigation }) {
           {menu.name && <Text style={styles.addressText2}>Name: </Text>}
           {menu.name && <Text style={styles.addressText}>{menu.name}{"\n"}</Text>}
           {(menu.deliveryTime || menu.deliveryTime == 0) && <Text style={styles.addressText2}>Delivery time: </Text>}
-          {(menu.deliveryTime || menu.deliveryTime == 0) &&  <Text style={styles.addressText}>{menu.deliveryTime}{" min \n"}</Text>}
+          {(menu.deliveryTime || menu.deliveryTime == 0) && <Text style={styles.addressText}>{menu.deliveryTime}{" min \n"}</Text>}
           {menu.price && <Text style={styles.addressText2}>Price: </Text>}
           {menu.price && <Text style={styles.addressText}>{menu.price + " €"}{"\n"}</Text>}
         </Text>
@@ -187,6 +155,15 @@ export default function OrderCheckOut({ route, navigation }) {
           <Text style={styles.confirmButtonText}>CONFIRM ORDER</Text>
         </TouchableOpacity>
       </View>
+      {showAlert && (
+        <BasicAlert
+          title={alertProps.title}
+          message={alertProps.message}
+          confirmText={alertProps.confirmText}
+          onConfirm={alertProps.onConfirm}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
     </View>
   );
 }

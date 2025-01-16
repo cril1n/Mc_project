@@ -66,12 +66,13 @@ export const styles = StyleSheet.create({
 
   //ProfileScreen
   profileMenuContainer: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "white",
     borderWidth: 2,
     borderColor: "#FFB534",
     borderRadius: 16,
     margin: 16,
-    padding: 8,
+    padding: 10,
+    elevation: 3, 
   },
   profileMenuItem: {
     flexDirection: 'row',
@@ -183,7 +184,7 @@ export const styles = StyleSheet.create({
   infoInput: {
     fontSize: 18,
     borderBottomWidth: 1,
-    borderBottomColor: '#FF9F43', // Orange border color
+    borderBottomColor: '#FF9F43', 
     paddingVertical: 5,
   },
   editButton: {
@@ -193,8 +194,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFA500',
     padding: 16,
     borderRadius: 25,
-    marginTop: 20,
-    elevation: 3, // Shadow for Android
+    margin: 20,
+    elevation: 3, 
   },
   editButtonText: {
     color: '#fff',
