@@ -131,6 +131,11 @@ export default class ViewModel {
     }
 
     static async saveLastMenuOpened(menu) {
+        // if (menu == null) {
+        //     console.log("Saving last menu null")
+        // } else {
+        //     console.log("Saving last menu completo")
+        // }
         try {
             await AsyncStorage.setItem("lastMenu", JSON.stringify(menu));
         } catch (error) {

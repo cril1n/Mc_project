@@ -11,6 +11,7 @@ import { useLocation } from "../../model/LocationContext";
 import { useUser } from "../../model/UserContext";
 import { styles } from "../../styles";
 import BasicAlert from "../BasicAlert";
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function OrderCheckOut({ route, navigation }) {
   const { menu } = route.params || {};
@@ -19,6 +20,25 @@ export default function OrderCheckOut({ route, navigation }) {
   const [address, setAddress] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertProps, setAlertProps] = useState({});
+
+  useEffect(() => {
+    // Funzione da eseguire quando la schermata viene sfocata (esci dalla schermata)
+    const unsubscribe = navigation.addListener('blur', () => {
+      ViewModel.saveLastMenuOpened(null);
+    });
+    // Cleanup dell'evento listener
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    setAddressPost();
+  }, [location]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      ViewModel.saveLastMenuOpened(menu)
+    })
+  )
 
   const setAddressPost = async () => {
     try {
@@ -32,10 +52,6 @@ export default function OrderCheckOut({ route, navigation }) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    setAddressPost();
-  }, [location]);
 
   const sendOrder = async () => {
     console.log("User:", user);
