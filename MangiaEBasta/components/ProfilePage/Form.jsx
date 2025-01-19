@@ -25,7 +25,7 @@ export default function Form({ checkProfile, navigation }) {
         (firstName &&
           ViewModel.validateProfileInfoField("firstName", firstName)) ||
         (lastName && ViewModel.validateProfileInfoField("lastName", lastName));
-        console.log("ERRORE: ", firstName + " " + lastName);
+     
       if (error) {
         console.log(error);
         Alert.alert("Error", error);

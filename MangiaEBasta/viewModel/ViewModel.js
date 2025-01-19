@@ -152,19 +152,6 @@ export default class ViewModel {
         }
     }
 
-    static async ResetApp() {
-        try {
-            await AsyncStorage.clear();
-            console.log('AsyncStorage cleared');
-            await this.stManager.resetDB();
-            console.log('Database resetted');
-            await this.psManager.resetPosition();
-            console.log('Position resetted');
-            console.log("App resetted");
-        } catch (error) {
-            console.log(error);
-        }
-    }
     //SESSIONID
     static async getSid() {
         try {
@@ -201,11 +188,12 @@ export default class ViewModel {
     }
     static async deleteAccount(refresh, triggerRefresh) {
         try {
-            await AsyncStorage.removeItem("user");
-            await AsyncStorage.removeItem("sid");
-            await AsyncStorage.removeItem("uid");
+            await AsyncStorage.clear()
+            console.log('AsyncStorage cleared');
+            await this.stManager.resetDB();
+            console.log('Database resetted');
+            console.log("App resetted");
             triggerRefresh();
-            console.log("Account deleted");
         } catch (error) {
             console.log(error);
         }
@@ -288,12 +276,30 @@ export default class ViewModel {
         }
     }
 
+    static async setLastOrderInfoInAsyncStorage(lastOrder) {
+        try {
+            await AsyncStorage.setItem("lastOrder", JSON.stringify(lastOrder));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async getLastOrderInfoFromAsyncStorage() {
+        try {
+            let lastOrder = await AsyncStorage.getItem("lastOrder");
+            return JSON.parse(lastOrder);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     static async sendOrder(mid, lat, lng, user, setUser) {
         try {
             const savedSid = await this.getSid();
             console.log("Sending order...");
             let response = await CommunicationController.sendOrder(mid, lat, lng, savedSid);
             console.log("Order sent");
+            this.setLastOrderInfoInAsyncStorage(response)
             console.log("Updating user after order...");
             await this.updateUserAfterOrder(user, setUser, response.oid);
             console.log("User updated");
@@ -389,8 +395,8 @@ export default class ViewModel {
 
             case "cardExpireYear":
                 // Controllo: deve essere una stringa di 2 cifre
-                const currentYear = new Date().getFullYear() % 100; 
-                if (!/^\d{2}$/.test(value) || parseInt(value) <= currentYear-1) {
+                const currentYear = new Date().getFullYear() % 100;
+                if (!/^\d{2}$/.test(value) || parseInt(value) <= currentYear - 1) {
                     error = "The expiration year must be a valid 2-digit number and greater than the current year.";
                 }
                 break;
